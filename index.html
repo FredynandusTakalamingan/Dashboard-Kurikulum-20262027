@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kurikulum SMAN 2 Bitung - TA 2026/2027</title>
+    <!-- Font & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --primary-blue: #1e40af;
+            --accent-blue: #2563eb;
+            --light-blue: #38bdf8;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            
+            /* Status Colors */
+            --sakit: #d97706;
+            --sakit-bg: #fef3c7;
+            --izin: #2563eb;
+            --izin-bg: #dbeafe;
+            --alpa: #dc2626;
+            --alpa-bg: #fee2e2;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* SPLASH SCREEN (TANPA LOGO GAMBAR) */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .splash-icon {
+            font-size: 64px;
+            color: var(--light-blue);
+            animation: pulseIcon 1.8s infinite ease-in-out;
+        }
+
+        .splash-title {
+            color: #ffffff;
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .loader-bar {
+            width: 160px; height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px; margin-top: 24px;
+            overflow: hidden; position: relative;
+        }
+
+        .loader-progress {
+            width: 0%; height: 100%;
+            background: linear-gradient(90deg, #2563eb, #38bdf8);
+            border-radius: 10px;
+            animation: fillProgress 2.2s ease-in-out forwards;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* LANDING PAGE & HERO SECTION */
+        #landing-page { width: 100%; min-height: 100vh; position: relative; }
+
+        #particles-canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+            position: relative; display: flex; align-items: center; justify-content: center;
+            padding: 80px 24px 60px; overflow: hidden;
+        }
+
+        .hero-bg-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(37, 99, 235, 0.2) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .floating-icon {
+            position: absolute; color: rgba(255, 255, 255, 0.05);
+            font-size: 80px; z-index: 1;
+            animation: floatAnim 6s infinite ease-in-out;
+        }
+
+        .icon-1 { top: 15%; left: 8%; animation-delay: 0s; }
+        .icon-2 { top: 65%; left: 12%; animation-delay: 2s; }
+        .icon-3 { top: 20%; right: 10%; animation-delay: 1s; }
+        .icon-4 { top: 70%; right: 15%; animation-delay: 3s; }
+
+        @keyframes floatAnim {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .hero-content {
+            position: relative; z-index: 2; max-width: 900px;
+            text-align: center; color: white;
+        }
+
+        .badge-year {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 18px; border-radius: 50px;
+            font-size: 13px; font-weight: 600; color: var(--light-blue);
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: 52px; font-weight: 800; line-height: 1.2; letter-spacing: -1px;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 18px; color: #94a3b8; max-width: 720px;
+            margin: 0 auto 36px; line-height: 1.6; font-weight: 400;
+        }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white; padding: 16px 36px; border-radius: 12px;
+            font-size: 16px; font-weight: 700; text-decoration: none;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
+            transition: all 0.3s ease; cursor: pointer; border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.7);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .designer-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 24px; border-radius: 12px;
+            margin-top: 40px; display: inline-block; text-align: left;
+        }
+
+        .designer-info .role {
+            font-size: 11px; color: var(--light-blue); text-transform: uppercase;
+            font-weight: 700; letter-spacing: 0.8px;
+        }
+
+        .designer-info .name {
+            font-size: 15px; font-weight: 700; color: #ffffff; margin-top: 2px;
+        }
+
+        /* STATISTIK COUNTER */
+        .stats-section {
+            background: #0f172a; border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border); padding: 40px 24px; position: relative; z-index: 2;
+        }
+
+        .stats-container {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;
+        }
+
+        .stat-card { text-align: center; padding: 20px; border-right: 1px solid rgba(255, 255, 255, 0.08); }
+        .stat-card:last-child { border-right: none; }
+        .stat-number { font-size: 40px; font-weight: 800; color: var(--light-blue); margin-bottom: 6px; }
+        .stat-label { color: #94a3b8; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* DASHBOARD MAIN & NAVIGASI TAB */
+        #dashboard-section { display: none; opacity: 0; transition: opacity 0.5s ease-in-out; }
+        .dashboard-container { max-width: 1600px; margin: 0 auto; padding: 24px; }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white; border-radius: 20px; padding: 32px 40px; margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer;
+            font-size: 13px; font-weight: 600; transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+
+        .btn-back:hover { background: rgba(255, 255, 255, 0.2); }
+
+        .dashboard-tabs {
+            display: flex; gap: 12px; margin-bottom: 24px;
+            border-bottom: 2px solid var(--border); padding-bottom: 8px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px; border-radius: 10px; border: none; background: transparent;
+            color: var(--text-muted); font-size: 14px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-dark); color: white;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+
+        .filter-card {
+            background: var(--card-bg); padding: 20px 24px; border-radius: 14px;
+            border: 1px solid var(--border); margin-bottom: 24px;
+            display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+        }
+
+        .filter-group { display: flex; align-items: center; gap: 10px; }
+        .filter-group label { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+        .filter-group select, .filter-group input {
+            padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);
+            background-color: #f8fafc; font-size: 13px; color: var(--text-main); outline: none; font-weight: 600;
+        }
+
+        .table-card {
+            background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border);
+            overflow-x: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 32px;
+        }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+        th {
+            background-color: #f1f5f9; color: var(--text-muted); padding: 14px 18px;
+            font-size: 11px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid var(--border);
+        }
+        td { padding: 16px 18px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        tr:hover { background-color: #f8fafc; }
+
+        .class-badge {
+            background: var(--primary-dark); color: white; padding: 4px 10px;
+            border-radius: 6px; font-weight: 700; font-size: 12px; display: inline-block; margin: 2px;
+        }
+
+        .pill-group { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        .pill { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+        .pill-sakit { background: var(--sakit-bg); color: var(--sakit); }
+        .pill-izin { background: var(--izin-bg); color: var(--izin); }
+        .pill-alpa { background: var(--alpa-bg); color: var(--alpa); }
+        .pill-tugas { background: var(--success-bg); color: var(--success); }
+        .pill-no-tugas { background: var(--alpa-bg); color: var(--alpa); }
+
+        .student-details { color: var(--text-main); font-size: 12px; line-height: 1.5; }
+        .student-details strong { color: var(--text-muted); }
+        .teacher-info { font-weight: 700; color: #b91c1c; }
+        .subject-tag { font-size: 11px; color: var(--text-muted); display: block; }
+
+        .absent-count-badge {
+            background: var(--alpa-bg); color: var(--alpa); padding: 4px 12px;
+            border-radius: 50px; font-weight: 800; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        footer { background: #090d16; color: #64748b; padding: 24px; text-align: center; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. SPLASH SCREEN -->
+    <div id="splash-screen">
+        <i class="fa-solid fa-graduation-cap splash-icon"></i>
+        <div class="splash-title">SMA NEGERI 2 BITUNG</div>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+
+    <!-- 2. LANDING PAGE -->
+    <div id="landing-page">
+        <canvas id="particles-canvas"></canvas>
+        <section class="hero-section">
+            <div class="hero-bg-overlay"></div>
+            <i class="fa-solid fa-graduation-cap floating-icon icon-1"></i>
+            <i class="fa-solid fa-book-open floating-icon icon-2"></i>
+            <i class="fa-solid fa-chart-line floating-icon icon-3"></i>
+            <i class="fa-solid fa-school floating-icon icon-4"></i>
+
+            <div class="hero-content">
+                <div class="badge-year">
+                    <i class="fa-solid fa-calendar-days"></i> TAHUN AJARAN 2026/2027 — SEMESTER GANJIL
+                </div>
+                <h1 class="hero-title">Dashboard Monitoring Kurikulum</h1>
+                <p class="hero-subtitle">
+                    Sistem Monitoring Presensi Siswa & Jam Kosong Guru SMA Negeri 2 Bitung (Rekap Harian 3-5 Agustus 2026)
+                </p>
+                <button class="btn-primary" onclick="showDashboard()">
+                    Masuk ke Dashboard <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <br>
+                <div class="designer-info">
+                    <div class="role"><i class="fa-solid fa-compass-drafting"></i> Didesain & Dirancang Oleh:</div>
+                    <div class="name">Fredynandus Takalamingan, S.Si</div>
+                    <div style="font-size: 11px; color: #94a3b8;">Wakil Kepala Sekolah Bidang Kurikulum</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="28">0</div>
+                    <div class="stat-label">Jumlah Kelas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="64">0</div>
+                    <div class="stat-label">Jumlah Guru</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="980">0</div>
+                    <div class="stat-label">Jumlah Siswa</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="96" data-suffix="%">0</div>
+                    <div class="stat-label">Tingkat Kehadiran</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 3. DASHBOARD MAIN -->
+    <div id="dashboard-section">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div>
+                    <button class="btn-back" onclick="showLandingPage()">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali ke Landing Page
+                    </button>
+                    <h1 style="font-size: 24px; font-weight: 800; margin-top: 12px;">DASHBOARD MONITORING KBM & PRESENSI</h1>
+                    <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">SMA NEGERI 2 BITUNG — REKAPITULASI 03 - 05 AGUSTUS 2026</p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 11px; color: var(--light-blue); font-weight: 700; text-transform: uppercase;">Didesain Oleh:</div>
+                    <div style="font-weight: 700; font-size: 15px;">Fredynandus Takalamingan, S.Si</div>
+                    <div style="font-size: 11px; color: #94a3b8;">Wakil Kepala Sekolah Bidang Kurikulum</div>
+                </div>
+            </div>
+
+            <!-- TABS MENU -->
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="switchTab('tab-kbm', this)">
+                    <i class="fa-solid fa-list-check"></i> Monitoring KBM Per Hari & Kelas
+                </button>
+                <button class="tab-btn" onclick="switchTab('tab-guru-absent', this)">
+                    <i class="fa-solid fa-user-xmark"></i> Rekapitulasi Ketidakhadiran Guru
+                </button>
+            </div>
+
+            <!-- TAB 1: MONITORING KBM BERDASARKAN FILTER HARI & KELAS -->
+            <div id="tab-kbm" class="tab-content active">
+                <div class="filter-card">
+                    <div class="filter-group">
+                        <label for="filterHari"><i class="fa-solid fa-calendar"></i> Pilih Hari:</label>
+                        <select id="filterHari" onchange="filterKbmTable()">
+                            <option value="Senin">Senin, 03 Agustus 2026</option>
+                            <option value="Selasa">Selasa, 04 Agustus 2026</option>
+                            <option value="Rabu">Rabu, 05 Agustus 2026</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterKelasSelect"><i class="fa-solid fa-school"></i> Pilih Kelas:</label>
+                        <select id="filterKelasSelect" onchange="filterKbmTable()">
+                            <option value="all">Semua Kelas</option>
+                            <option value="X-A">X-A</option><option value="X-B">X-B</option><option value="X-C">X-C</option>
+                            <option value="X-E">X-E</option><option value="X-F">X-F</option><option value="X-G">X-G</option>
+                            <option value="X-H">X-H</option><option value="X-I">X-I</option><option value="X-K">X-K</option>
+                            <option value="XI-A1">XI-A1</option><option value="XI-A2">XI-A2</option><option value="XI-B1">XI-B1</option>
+                            <option value="XI-B2">XI-B2</option><option value="XI-B3">XI-B3</option><option value="XI-C1">XI-C1</option>
+                            <option value="XI-C2">XI-C2</option><option value="XI-E">XI-E</option><option value="XI-F1">XI-F1</option>
+                            <option value="XI-F2">XI-F2</option><option value="XII-A1">XII-A1</option><option value="XII-A2">XII-A2</option>
+                            <option value="XII-B1">XII-B1</option><option value="XII-C1">XII-C1</option><option value="XII-C2">XII-C2</option>
+                            <option value="XII-C3">XII-C3</option><option value="XII-D">XII-D</option><option value="XII-F">XII-F</option>
+                            <option value="XII-G1">XII-G1</option><option value="XII-G2">XII-G2</option><option value="XII-H">XII-H</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <table id="kbmTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 12%;">Hari / Tgl</th>
+                                <th style="width: 8%;">Kelas</th>
+                                <th style="width: 40%;">Ketidakhadiran Siswa</th>
+                                <th style="width: 25%;">Guru Tidak Masuk</th>
+                                <th style="width: 15%;">Status / Tugas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- SENIN, 3 AGUSTUS 2026 -->
+                            <tr data-hari="Senin" data-kelas="X-H">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">X-H</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 1</span></div><div class="student-details">Arini Bawangung</div></td>
+                                <td><span class="teacher-info">Jewels Hariawang, S.Pd</span> (PJOK)<br><span class="teacher-info">Anjelsvina Datalamon, S.Pd</span> (Sosiologi)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XI-F2">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XI-F2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 3</span><span class="pill pill-alpa">Alpa: 1</span></div><div class="student-details">S: Erin K, Griseldis S, Miracle M<br>A: Jibert Mangetik</div></td>
+                                <td>-</td><td><span class="pill pill-tugas">Guru Lengkap</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XII-G2">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XII-G2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 3</span><span class="pill pill-izin">Izin: 3</span><span class="pill pill-alpa">Alpa: 2</span></div><div class="student-details">S: Azzahra, Fathir, Sara | I: Cleo, Juliver, Alif | A: Prita, Yosia</div></td>
+                                <td><span class="teacher-info">Fransisce Lera</span> (B. Indonesia jam 5-7)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XI-B3">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XI-B3</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 2</span><span class="pill pill-izin">Izin: 5</span><span class="pill pill-alpa">Alpa: 1</span></div><div class="student-details">S: Faradhila, Alifa | I: Nur Naila, Sherly, Whitney, Marcello, Chilya | A: Theresia</div></td>
+                                <td>-</td><td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="X-K">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">X-K</span></td>
+                                <td><span class="pill pill-tugas">Hadir Semua</span></td><td>-</td><td><span class="pill pill-tugas">Guru Lengkap</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="X-I">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">X-I</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 1</span></div><div class="student-details">Mikhaella Bangheli</div></td>
+                                <td><span class="teacher-info">Anjelsvina Datalamon, S.Pd</span></td>
+                                <td><span class="pill pill-tugas">Ada Tugas</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XII-G1">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XII-G1</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 7</span><span class="pill pill-izin">Izin: 1</span><span class="pill pill-alpa">Alpa: 1</span></div><div class="student-details">S: Velovexia, Fanolen, Anugrah, Andini, Jeanica, Giovani, Meisilin | A: Jafrany | I: Castino</div></td>
+                                <td><span class="teacher-info">Tenny Boyke Pasuma</span> (Sejarah)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="X-E">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">X-E</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 3</span></div><div class="student-details">Atiya Ramadhani, Marcela Mananohas, Solagracia Turere</div></td>
+                                <td><span class="teacher-info">Anggraini Puspitasari, S.Pd</span> (Geografi)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Tugas</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XII-C1">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XII-C1</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 1</span><span class="pill pill-izin">Izin: 1</span><span class="pill pill-alpa">Alpa: 5</span></div><div class="student-details">S: Gwyneth | I: Lyra | A: Biancha, Destinia, Hizkia, Gideon, Rut</div></td>
+                                <td><span class="teacher-info">Weldy Borang, S.Pd</span> (Seni Budaya)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XII-C2">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XII-C2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 4</span><span class="pill pill-alpa">Alpa: 2</span></div><div class="student-details">S: Anastasia, Arzan, Leyticia, Presilia | TK: Ariel, Kesya</div></td>
+                                <td><span class="teacher-info">Weldy Borang, S.Pd</span> (Seni Budaya)<br><span class="teacher-info">Sriastuty Asjhadi</span> (Kimia)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XII-H">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XII-H</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 3</span><span class="pill pill-izin">Izin: 1</span><span class="pill pill-alpa">Alpa: 1</span></div><div class="student-details">S: Stefina, Novlyn, Ovelia | I: Sarah | A: Gizza</div></td>
+                                <td>-</td><td><span class="pill pill-tugas">Guru Lengkap</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XII-A1">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XII-A1</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 2</span></div><div class="student-details">Bravehard Supit, Ricardo Wiku</div></td>
+                                <td>-</td><td><span class="pill pill-tugas">Guru Lengkap</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XII-F">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XII-F</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 2</span><span class="pill pill-alpa">Alpa: 4</span></div><div class="student-details">S: Khumaira, Imanuel M | A: Dhimas, Ghiofano, Imelda, Messi Izzak</div></td>
+                                <td><span class="teacher-info">Vanti Kailas, S.Pd</span><br><span class="teacher-info">Dorothea W. Lumanaw</span> (FLS3N)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="X-A">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">X-A</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 3</span><span class="pill pill-izin">Izin: 1</span></div><div class="student-details">S: Abdul Razaq, Abigail Tumbel, Queenzly | I: Fadil Ishak</div></td>
+                                <td>-</td><td><span class="pill pill-tugas">Guru Lengkap</span></td>
+                            </tr>
+                            <tr data-hari="Senin" data-kelas="XII-D">
+                                <td>Senin, 03/08/26</td><td><span class="class-badge">XII-D</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 4</span><span class="pill pill-alpa">Alpa: 5</span></div><div class="student-details">S: Gisella, Hapizh, Richard, Estefano | A: Joval, Clerens, Jonathan, M. Bilal, M. Dwi Kanna</div></td>
+                                <td><span class="teacher-info">Alui Chrisma Lombu</span> (Latihan)<br><span class="teacher-info">Kristina Situmeang</span></td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+
+                            <!-- SELASA, 4 AGUSTUS 2026 -->
+                            <tr data-hari="Selasa" data-kelas="XII-C1">
+                                <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-C1</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 4</span><span class="pill pill-izin">Izin: 1</span><span class="pill pill-alpa">Alpa: 6</span></div><div class="student-details">S: Farsela, Jose, Gideon, Safira | I: Windira | A: Hiskia, Frelita, Anggraini, Siti, Cherril, Fahri</div></td>
+                                <td><span class="teacher-info">Ocsilya Sahempa, S.Pd</span> (B. Indonesia)</td>
+                                <td><span class="pill pill-tugas">TM FLS3N</span></td>
+                            </tr>
+                            <tr data-hari="Selasa" data-kelas="XII-D">
+                                <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-D</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 5</span><span class="pill pill-alpa">Alpa: 3</span></div><div class="student-details">S: M. Dwi Akbar, Sergio, Nikita, Yebrian, Clerens | A: Aliya, Daniel, Putri Diko</div></td>
+                                <td><span class="teacher-info">Chairunnisa Khairupan, S.Pd</span> (B. Inggris)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Selasa" data-kelas="XI-F2">
+                                <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-F2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 5</span><span class="pill pill-alpa">Alpa: 2</span></div><div class="student-details">S: Erin, Andi Achmad, Achmad Muchtar, Nuzululrizky, Queen | A: Jibert, Syahril</div></td>
+                                <td>-</td><td><span class="pill pill-tugas">Guru Lengkap</span></td>
+                            </tr>
+                            <tr data-hari="Selasa" data-kelas="XII-G2">
+                                <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-G2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 2</span><span class="pill pill-izin">Izin: 2</span><span class="pill pill-alpa">Alpa: 5</span></div><div class="student-details">S: Rahmad, Sara | I: Novita, Juliver | A: Deden, Alif, Zainal, Juliet | Bolos: Tania (jam 6-7)</div></td>
+                                <td><span class="teacher-info">Anjelsvina Datalamon, S.Pd</span> (Sosiologi)</td>
+                                <td><span class="pill pill-tugas">Ada Tugas</span></td>
+                            </tr>
+                            <tr data-hari="Selasa" data-kelas="XI-A1">
+                                <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-A1</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 3</span><span class="pill pill-izin">Izin: 6</span><span class="pill pill-alpa">Alpa: 1</span></div><div class="student-details">S: Electra, Lionel P, Leonel N | I: Douminique, Putra, Amel, Christania, Kanaya, Joael | A: Novandro</div></td>
+                                <td><span class="teacher-info">Yulastri Diamanis, S.Pd</span> (B. Indonesia)</td>
+                                <td><span class="pill pill-tugas">FLS3N + Ada Tugas</span></td>
+                            </tr>
+                            <tr data-hari="Selasa" data-kelas="XII-A2">
+                                <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-A2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 3</span><span class="pill pill-izin">Izin: 1</span><span class="pill pill-alpa">Alpa: 1</span></div><div class="student-details">S: Marchela, M. Rizal, Apriliyani | I: Andrean | A: Ibrohim Sultan</div></td>
+                                <td><span class="teacher-info">Kristina Situmeang, S.Pd</span> (Sejarah)<br><span class="teacher-info">Weldy Borang, S.Pd</span> (Seni Budaya)<br><span class="teacher-info">Dorothea W. Lumanaw</span> (Informatika)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+
+                            <!-- RABU, 5 AGUSTUS 2026 -->
+                            <tr data-hari="Rabu" data-kelas="XI-F2">
+                                <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-F2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 1</span><span class="pill pill-izin">Izin: 5</span><span class="pill pill-alpa">Bolos: 6</span></div><div class="student-details">S: Sarifa | I: Andita, Kartika, Lovely, Mutiara, Nurul | Bolos: Cintamy, M. Hifni, M. Daffa, Queen, Syahril, Felovely</div></td>
+                                <td>-</td><td><span class="pill pill-tugas">Guru Lengkap</span></td>
+                            </tr>
+                            <tr data-hari="Rabu" data-kelas="XII-C1">
+                                <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-C1</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 2</span><span class="pill pill-alpa">Alpa: 1</span></div><div class="student-details">S: Cherill, Nazwa | A: Naysila</div></td>
+                                <td><span class="teacher-info">Fritz Embongbulan, S.Pd</span> (Matematika)</td>
+                                <td><span class="pill pill-no-tugas">Kegiatan Guru</span></td>
+                            </tr>
+                            <tr data-hari="Rabu" data-kelas="XII-H">
+                                <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-H</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 1</span><span class="pill pill-alpa">Alpa: 1</span></div><div class="student-details">S: Stefina Masone | A: Gizza Manikome</div></td>
+                                <td><span class="teacher-info">Anti Ahualambung, S.Pd</span> (B. Inggris)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Tugas</span></td>
+                            </tr>
+                            <tr data-hari="Rabu" data-kelas="XI-B2">
+                                <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-B2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-izin">Izin: 4</span></div><div class="student-details">I: Armilda, Holyqueen, Julia Tarore, Keren Lekatompessy</div></td>
+                                <td><span class="teacher-info">Martiwi Mokodongan</span> (Sastra Indo)<br><span class="teacher-info">Sriastuty Asjhadi</span> (Kimia)<br><span class="teacher-info">Dorothea W. Lumanaw</span> (Informatika)</td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr data-hari="Rabu" data-kelas="XII-B1">
+                                <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-B1</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 1</span><span class="pill pill-izin">Izin: 1</span><span class="pill pill-alpa">Alpa: 5</span></div><div class="student-details">S: Eldifo | I: Kevin Tinentang | A: Lovely, Thalita, Marvel, Afgan, Prisca</div></td>
+                                <td><span class="teacher-info">Weldy Borang, S.Pd</span> (Seni Budaya)<br><span class="teacher-info">Fredynandus Takalamingan, S.Si</span> (Fisika)</td>
+                                <td><span class="pill pill-tugas">Tugas Luar (Lab/Cabdin)</span></td>
+                            </tr>
+                            <tr data-hari="Rabu" data-kelas="XII-G2">
+                                <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-G2</span></td>
+                                <td><div class="pill-group"><span class="pill pill-sakit">Sakit: 3</span><span class="pill pill-izin">Izin: 2</span><span class="pill pill-alpa">Alpa: 2</span></div><div class="student-details">S: Delima, Juliet, Sara | I: Abriano, Juliver | A: Nikita, Prita</div></td>
+                                <td><span class="teacher-info">Fanda Kambey, S.Pd</span> (Ekonomi)<br><span class="teacher-info">Alui Chrisma Lombu, S.Pd</span> (Seni Budaya)<br><span class="teacher-info">Afke Sawel, S.Pd</span> (B. Indo TL)</td>
+                                <td><span class="pill pill-tugas">Ada Tugas</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 2: REKAPITULASI GURU TIDAK MASUK LENGKAP -->
+            <div id="tab-guru-absent" class="tab-content">
+                <div class="filter-card">
+                    <div class="filter-group" style="width: 100%;">
+                        <label for="searchGuruInput"><i class="fa-solid fa-magnifying-glass"></i> Cari Nama Guru / Mata Pelajaran:</label>
+                        <input type="text" id="searchGuruInput" onkeyup="filterGuruTable()" placeholder="Ketik nama guru atau mapel..." style="flex: 1;">
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <table id="guruAbsentTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 22%;">Nama Guru</th>
+                                <th style="width: 18%;">Mata Pelajaran</th>
+                                <th style="width: 30%;">Kelas Ditinggalkan (Senin-Rabu)</th>
+                                <th style="width: 15%;">Frekuensi Tidak Masuk</th>
+                                <th style="width: 15%;">Status / Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong class="teacher-info">Weldy Satria Christian Borang, S.Pd</strong></td>
+                                <td>Seni Budaya</td>
+                                <td><span class="class-badge">XII-C1</span><span class="class-badge">XII-C2</span><span class="class-badge">XII-A2</span><span class="class-badge">XI-E</span><span class="class-badge">XII-B1</span></td>
+                                <td><span class="absent-count-badge">5 Kelas</span></td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Dorothea Wulandea Lumanaw, S.Pd</strong></td>
+                                <td>Informatika</td>
+                                <td><span class="class-badge">XII-F</span><span class="class-badge">XII-A2</span><span class="class-badge">XI-B2</span><span class="class-badge">XI-A2</span></td>
+                                <td><span class="absent-count-badge">4 Kelas</span></td>
+                                <td><span class="pill pill-tugas">Pendampingan FLS3N</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Anjelsvina Datalamon, S.Pd</strong></td>
+                                <td>Sosiologi</td>
+                                <td><span class="class-badge">X-H</span><span class="class-badge">X-I</span><span class="class-badge">XII-G2 (x2)</span><span class="class-badge">XII-G1</span></td>
+                                <td><span class="absent-count-badge">5 Kelas</span></td>
+                                <td><span class="pill pill-tugas">Memberi Tugas</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Alui Chrisma Lombu, S.Pd</strong></td>
+                                <td>Seni Budaya</td>
+                                <td><span class="class-badge">XI-C2</span><span class="class-badge">XII-D</span><span class="class-badge">XI-B3</span><span class="class-badge">XII-G2</span></td>
+                                <td><span class="absent-count-badge">4 Kelas</span></td>
+                                <td><span class="pill pill-tugas">Pendampingan FLS3N</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Fransisce Lera, S.Pd</strong></td>
+                                <td>Bahasa Indonesia</td>
+                                <td><span class="class-badge">XII-G2</span><span class="class-badge">XII-B1</span><span class="class-badge">X-A</span></td>
+                                <td><span class="absent-count-badge">3 Kelas</span></td>
+                                <td><span class="pill pill-tugas">Memberi Tugas</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Yunita Aronde, S.Pd</strong></td>
+                                <td>Bahasa Indonesia</td>
+                                <td><span class="class-badge">X-H</span><span class="class-badge">X-I</span><span class="class-badge">X-F</span></td>
+                                <td><span class="absent-count-badge">3 Kelas</span></td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Sriastuty Asjhadi, S.Pd</strong></td>
+                                <td>Kimia</td>
+                                <td><span class="class-badge">XII-C2</span><span class="class-badge">XI-A1</span><span class="class-badge">XI-B2</span></td>
+                                <td><span class="absent-count-badge">3 Kelas</span></td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Carolina Gloria Masihor, S.Pd</strong></td>
+                                <td>Ekonomi</td>
+                                <td><span class="class-badge">X-I</span><span class="class-badge">X-E</span><span class="class-badge">XI-E</span></td>
+                                <td><span class="absent-count-badge">3 Kelas</span></td>
+                                <td><span class="pill pill-tugas">Memberi Tugas</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Chairunnisa Khairupan, S.Pd</strong></td>
+                                <td>Bahasa Inggris TL</td>
+                                <td><span class="class-badge">XII-D</span><span class="class-badge">XII-H</span></td>
+                                <td><span class="absent-count-badge">2 Kelas</span></td>
+                                <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Charly Charles Johnry Koloay, S.Pd</strong></td>
+                                <td>PJOK</td>
+                                <td><span class="class-badge">XI-C2</span><span class="class-badge">X-E</span><span class="class-badge">X-F</span></td>
+                                <td><span class="absent-count-badge">3 Kelas</span></td>
+                                <td><span class="pill pill-tugas">Ada Kegiatan</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong class="teacher-info">Fredynandus Takalamingan, S.Si</strong></td>
+                                <td>Fisika</td>
+                                <td><span class="class-badge">XII-B1</span></td>
+                                <td><span class="absent-count-badge">1 Kelas</span></td>
+                                <td><span class="pill pill-tugas">Tugas Luar / Cabdin</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 SMA Negeri 2 Bitung. All Rights Reserved. Designed for Educational Leadership.
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+                startCounters();
+            }, 1800);
+        });
+
+        function showDashboard() {
+            document.getElementById('landing-page').style.display = 'none';
+            const dash = document.getElementById('dashboard-section');
+            dash.style.display = 'block';
+            setTimeout(() => { dash.style.opacity = '1'; }, 50);
+            window.scrollTo(0, 0);
+        }
+
+        function showLandingPage() {
+            const dash = document.getElementById('dashboard-section');
+            dash.style.opacity = '0';
+            setTimeout(() => {
+                dash.style.display = 'none';
+                document.getElementById('landing-page').style.display = 'block';
+                window.scrollTo(0, 0);
+            }, 300);
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            element.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function startCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const suffix = counter.getAttribute('data-suffix') || '';
+                let current = 0;
+                const increment = target / 50;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current) + suffix;
+                        setTimeout(updateCounter, 30);
+                    } else {
+                        counter.innerText = target + suffix;
+                    }
+                };
+                updateCounter();
+            });
+        }
+
+        // Particle Canvas Background
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = [];
+        for (let i = 0; i < 40; i++) {
+            particles.push({
+                x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1, dx: (Math.random() - 0.5) * 0.5, dy: (Math.random() - 0.5) * 0.5,
+                alpha: Math.random() * 0.5 + 0.2
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.dx; p.y += p.dy;
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(56, 189, 248, ${p.alpha})`; ctx.fill();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Filtering Logic untuk KBM Table
+        function filterKbmTable() {
+            const hariVal = document.getElementById('filterHari').value;
+            const kelasVal = document.getElementById('filterKelasSelect').value;
+            const rows = document.querySelectorAll('#kbmTable tbody tr');
+
+            rows.forEach(row => {
+                const rowHari = row.getAttribute('data-hari');
+                const rowKelas = row.getAttribute('data-kelas');
+
+                let hariMatch = (rowHari === hariVal);
+                let kelasMatch = (kelasVal === 'all' || rowKelas === kelasVal);
+
+                if (hariMatch && kelasMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Filtering Logic untuk Guru Absent Table
+        function filterGuruTable() {
+            const input = document.getElementById('searchGuruInput').value.toUpperCase();
+            const rows = document.querySelectorAll('#guruAbsentTable tbody tr');
+
+            rows.forEach(row => {
+                const text = row.innerText.toUpperCase();
+                row.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

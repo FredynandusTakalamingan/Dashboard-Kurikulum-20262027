@@ -3,1600 +3,866 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Realtime Presensi & KBM SMAN 2 Bitung</title>
-    <!-- Font & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Dashboard Kurikulum - SMAN 2 Bitung</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     
     <style>
         :root {
-            --primary-dark: #0f172a;
-            --primary-blue: #1e40af;
-            --accent-blue: #2563eb;
-            --light-blue: #38bdf8;
-            --bg-main: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            
-            /* Status Colors */
-            --sakit: #d97706;
-            --sakit-bg: #fef3c7;
-            --izin: #2563eb;
-            --izin-bg: #dbeafe;
-            --alpa: #dc2626;
-            --alpa-bg: #fee2e2;
-            --success: #16a34a;
-            --success-bg: #dcfce7;
+            --primary-blue: #0d47a1;
+            --secondary-blue: #1976d2;
+            --light-bg: #f4f6f9;
+            --dark-sidebar: #1a233a;
         }
 
-        * {
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0;
-            padding: 0;
+        html {
             scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
             overflow-x: hidden;
         }
 
-        /* SPLASH SCREEN */
-        #splash-screen {
+        /* Hero Section / Landing Page */
+        .landing-page {
             position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(rgba(13, 71, 161, 0.88), rgba(25, 118, 210, 0.85)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200') center/cover no-repeat;
             z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.5s ease-in-out;
         }
 
-        .splash-icon {
-            font-size: 64px;
-            color: var(--light-blue);
-            animation: pulseIcon 1.8s infinite ease-in-out;
+        .landing-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 850px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
-        .splash-title {
-            color: #ffffff;
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
+        .profile-badge {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 8px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 15px;
         }
 
-        .loader-bar {
-            width: 160px; height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px; margin-top: 24px;
-            overflow: hidden; position: relative;
+        .profile-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #fff;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
 
-        .loader-progress {
-            width: 0%; height: 100%;
-            background: linear-gradient(90deg, #2563eb, #38bdf8);
-            border-radius: 10px;
-            animation: fillProgress 2.2s ease-in-out forwards;
+        /* Sidebar UI Fixed Position */
+        #sidebar {
+            width: 260px;
+            background: var(--dark-sidebar);
+            color: #fff;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
         }
 
-        @keyframes pulseIcon {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            text-align: center;
         }
 
-        @keyframes fillProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
+        #sidebar ul.components {
+            padding: 15px 0;
         }
 
-        /* DASHBOARD REALTIME HEADER & CARDS */
-        .dashboard-container { max-width: 1600px; margin: 0 auto; padding: 24px; }
-
-        .dashboard-header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white; border-radius: 20px; padding: 28px 36px; margin-bottom: 24px;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3);
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+        #sidebar ul li a {
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #a6b0cf;
+            text-decoration: none;
+            transition: 0.2s;
+            cursor: pointer;
         }
 
-        .realtime-badge {
-            background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e;
-            color: #4ade80; padding: 6px 14px; border-radius: 50px;
-            font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;
+        #sidebar ul li a:hover, #sidebar ul li.active > a {
+            color: #fff;
+            background: var(--secondary-blue);
         }
 
-        .pulse-dot {
-            width: 8px; height: 8px; background-color: #22c55e;
-            border-radius: 50%; animation: blink 1.2s infinite;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        /* GRID KARTU STATISTIK */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px; margin-bottom: 24px;
+        /* Content Area Offset */
+        #content {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 25px;
+            min-height: 100vh;
         }
 
         .card-stat {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px; padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
         }
 
         .card-stat:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
         }
 
-        .card-stat .icon-box {
-            width: 42px; height: 42px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; margin-bottom: 12px;
+        .icon-shape {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
         }
 
-        .card-stat .stat-val { font-size: 28px; font-weight: 800; color: var(--text-main); }
-        .card-stat .stat-lbl { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-top: 2px; }
-
-        /* FILTER & TABS */
-        .dashboard-tabs {
-            display: flex; gap: 12px; margin-bottom: 20px;
-            border-bottom: 2px solid var(--border); padding-bottom: 8px;
+        .nav-tabs .nav-link {
+            font-weight: 600;
+            color: #495057;
+            border-radius: 8px 8px 0 0;
         }
 
-        .tab-btn {
-            padding: 12px 24px; border-radius: 10px; border: none; background: transparent;
-            color: var(--text-muted); font-size: 14px; font-weight: 700; cursor: pointer;
-            transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        .nav-tabs .nav-link.active {
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--primary-blue);
         }
 
-        .tab-btn.active {
-            background: var(--primary-dark); color: white;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        .section-target {
+            scroll-margin-top: 20px;
         }
 
-        .filter-card {
-            background: var(--card-bg); padding: 18px 24px; border-radius: 14px;
-            border: 1px solid var(--border); margin-bottom: 20px;
-            display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+        footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            border-top: 1px solid #e0e0e0;
+            color: #6c757d;
         }
-
-        .filter-group { display: flex; align-items: center; gap: 10px; }
-        .filter-group label { font-size: 13px; font-weight: 700; color: var(--text-muted); }
-        .filter-group select, .filter-group input {
-            padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);
-            background-color: #f8fafc; font-size: 13px; color: var(--text-main); outline: none; font-weight: 600;
-        }
-
-        .table-card {
-            background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border);
-            overflow-x: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 32px;
-        }
-
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-        th {
-            background-color: #f1f5f9; color: var(--text-muted); padding: 14px 18px;
-            font-size: 11px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid var(--border);
-        }
-        td { padding: 14px 18px; border-bottom: 1px solid var(--border); vertical-align: top; }
-        tr:hover { background-color: #f8fafc; }
-
-        .class-badge {
-            background: var(--primary-dark); color: white; padding: 4px 10px;
-            border-radius: 6px; font-weight: 700; font-size: 12px; display: inline-block;
-        }
-
-        .pill-group { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
-        .pill { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-        .pill-sakit { background: var(--sakit-bg); color: var(--sakit); }
-        .pill-izin { background: var(--izin-bg); color: var(--izin); }
-        .pill-alpa { background: var(--alpa-bg); color: var(--alpa); }
-        .pill-tugas { background: var(--success-bg); color: var(--success); }
-        .pill-no-tugas { background: var(--alpa-bg); color: var(--alpa); }
-
-        /* STYLES TAMBAHAN UNTUK TABEL RINCIAN SISWA */
-        .inner-student-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            font-size: 11px;
-        }
-        .inner-student-table th {
-            background: #f1f5f9;
-            padding: 6px 10px;
-            font-size: 10px;
-            text-transform: uppercase;
-            border-bottom: 1px solid var(--border);
-            border-right: 1px solid var(--border);
-        }
-        .inner-student-table td {
-            padding: 6px 10px;
-            border-bottom: 1px solid var(--border);
-            border-right: 1px solid var(--border);
-            vertical-align: middle;
-        }
-        .inner-student-table tr:last-child td {
-            border-bottom: none;
-        }
-        .inner-student-table td:last-child, .inner-student-table th:last-child {
-            border-right: none;
-        }
-
-        .student-details { color: var(--text-main); font-size: 12px; line-height: 1.5; }
-        .teacher-info { font-weight: 700; color: #b91c1c; }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        footer { background: #090d16; color: #64748b; padding: 24px; text-align: center; font-size: 13px; }
     </style>
 </head>
 <body>
 
-    <!-- 1. SPLASH SCREEN -->
-    <div id="splash-screen">
-        <i class="fa-solid fa-graduation-cap splash-icon"></i>
-        <div class="splash-title">SMA NEGERI 2 BITUNG</div>
-        <div class="loader-bar">
-            <div class="loader-progress"></div>
-        </div>
-    </div>
-
-    <!-- 2. DASHBOARD MAIN -->
-    <div class="dashboard-container">
-        <!-- HEADER -->
-        <div class="dashboard-header">
-            <div>
-                <div class="realtime-badge"><div class="pulse-dot"></div> DASHBOARD REALTIME</div>
-                <h1 style="font-size: 24px; font-weight: 800; margin-top: 10px;">MONITORING PRESENSI & KBM HARIAN</h1>
-                <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">SMA NEGERI 2 BITUNG — INTEGRASI REKAP DATA WA (3-5 AGUSTUS 2026)</p>
+    <!-- 1. LANDING PAGE / HERO SECTION -->
+    <div class="landing-page" id="landingPage">
+        <div class="landing-card">
+            <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                <i class="fa-solid fa-school fa-3x text-warning"></i>
+                <i class="fa-solid fa-graduation-cap fa-3x"></i>
             </div>
-            <div style="text-align: right;">
-                <div style="font-size: 11px; color: var(--light-blue); font-weight: 700; text-transform: uppercase;">Penanggung Jawab Kurikulum:</div>
-                <div style="font-weight: 700; font-size: 15px;">Fredynandus Takalamingan, S.Si</div>
-                <div style="font-size: 11px; color: #94a3b8;">Wakil Kepala Sekolah Bidang Kurikulum</div>
-            </div>
-        </div>
-
-        <!-- STATISTIK REALTIME CARDS -->
-        <div class="stats-grid">
-            <div class="card-stat">
-                <div class="icon-box" style="background: #dbeafe; color: #1e40af;"><i class="fa-solid fa-users"></i></div>
-                <div class="stat-val counter" data-target="980">0</div>
-                <div class="stat-lbl">Jumlah Siswa Hari Ini</div>
-            </div>
-            <div class="card-stat">
-                <div class="icon-box" style="background: #dcfce7; color: #15803d;"><i class="fa-solid fa-user-check"></i></div>
-                <div class="stat-val counter" data-target="58">0</div>
-                <div class="stat-lbl">Jumlah Guru Hadir</div>
-            </div>
-            <div class="card-stat">
-                <div class="icon-box" style="background: #fee2e2; color: #b91c1c;"><i class="fa-solid fa-user-xmark"></i></div>
-                <div class="stat-val counter" data-target="18">0</div>
-                <div class="stat-lbl">Guru Tidak Masuk</div>
-            </div>
-            <div class="card-stat">
-                <div class="icon-box" style="background: #fef3c7; color: #b45309;"><i class="fa-solid fa-bed"></i></div>
-                <div class="stat-val counter" data-target="38">0</div>
-                <div class="stat-lbl">Siswa Sakit</div>
-            </div>
-            <div class="card-stat">
-                <div class="icon-box" style="background: #e0e7ff; color: #4338ca;"><i class="fa-solid fa-envelope"></i></div>
-                <div class="stat-val counter" data-target="42">0</div>
-                <div class="stat-lbl">Siswa Izin</div>
-            </div>
-            <div class="card-stat">
-                <div class="icon-box" style="background: #ffe4e6; color: #be123c;"><i class="fa-solid fa-user-slash"></i></div>
-                <div class="stat-val counter" data-target="24">0</div>
-                <div class="stat-lbl">Siswa Alpha</div>
-            </div>
-            <div class="card-stat">
-                <div class="icon-box" style="background: #ccfbf1; color: #0f766e;"><i class="fa-solid fa-person-chalkboard"></i></div>
-                <div class="stat-val counter" data-target="28">0</div>
-                <div class="stat-lbl">KBM Berjalan (Kelas)</div>
-            </div>
-            <div class="card-stat">
-                <div class="icon-box" style="background: #f3e8ff; color: #6b21a8;"><i class="fa-solid fa-chart-pie"></i></div>
-                <div class="stat-val counter" data-target="94" data-suffix="%">0</div>
-                <div class="stat-lbl">Persentase Kehadiran</div>
-            </div>
-        </div>
-
-        <!-- TABS MENU -->
-        <div class="dashboard-tabs">
-            <button class="tab-btn active" onclick="switchTab('tab-kbm', this)">
-                <i class="fa-solid fa-list-check"></i> Presensi Harian Per Kelas (Seluruh Data Input)
-            </button>
-            <button class="tab-btn" onclick="switchTab('tab-guru-absent', this)">
-                <i class="fa-solid fa-user-xmark"></i> Rekapitulasi Ketidakhadiran Guru
-            </button>
-        </div>
-
-        <!-- TAB 1: SELURUH DATA REKAP PRESENSI KELAS -->
-        <div id="tab-kbm" class="tab-content active">
-            <div class="filter-card">
-                <div class="filter-group">
-                    <label for="filterHari"><i class="fa-solid fa-calendar"></i> Filter Hari:</label>
-                    <select id="filterHari" onchange="filterKbmTable()">
-                        <option value="all">Semua Hari</option>
-                        <option value="Senin">Senin, 03 Agustus 2026</option>
-                        <option value="Selasa">Selasa, 04 Agustus 2026</option>
-                        <option value="Rabu">Rabu, 05 Agustus 2026</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="filterKelasSelect"><i class="fa-solid fa-school"></i> Filter Kelas:</label>
-                    <select id="filterKelasSelect" onchange="filterKbmTable()">
-                        <option value="all">Semua Kelas</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="table-card">
-                <table id="kbmTable">
-                    <thead>
-                        <tr>
-                            <th style="width: 10%;">Hari / Tgl</th>
-                            <th style="width: 8%;">Kelas</th>
-                            <th style="width: 50%;">Rincian Ketidakhadiran Siswa</th>
-                            <th style="width: 17%;">Guru Tidak Masuk</th>
-                            <th style="width: 15%;">Keterangan / Tugas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- SENIN, 3 AGUSTUS 2026 -->
-                        <tr data-hari="Senin" data-kelas="X-H">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-H</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Arini Bawangung</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Jewels Hariawang S.Pd</span> (PJOK)<br><span class="teacher-info">Anjelsvina Datalamon S.Pd</span> (Sosiologi)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-F2">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-F2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Erin Kasaluhe, Griseldis Simpaen, Miracle Makausi</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Jibert Mangetik</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-G2">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-G2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Azzahra Nuku, Fathir Otoluwa, Sara Aruperes</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Cleo Suwito, Juliver Morahing, Alif Sulaeman</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Prita Lakuhati, Yosia Mararoating</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Fransisce Lera</span> (Bhs Indonesia jam 5-7)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-B3">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-B3</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Faradhila Risky, Alifa Tamara</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (5)</span></td><td>Nur Naila Candra, Sherly Sandiata, Whitney Bawotong, Marcello Maliota, Chilya Agustina</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Theresia Corneles</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="X-K">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-K</span></td>
-                            <td><span class="pill pill-tugas">Siswa Hadir Semua</span></td><td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="X-I">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-I</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Mikhaella Bangheli</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Anjelsvina Datalamon S.Pd</span></td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-G1">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-G1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (7)</span></td><td>Velovexia Endey, Fanolen Esa, Anugrah Ramadhan, Andini Cusoy, Jeanica Walone, Giovani Bilindade, Meisilin Setia</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Castino Kasehung</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Jafrany Ante</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Mner Tenny</span> (Sejarah)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="X-E">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-E</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Atiya Ramadhani, Marcela C.A Mananohas, Solagracia F.J Turere</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Anggraini Puspitasari S.Pd</span> (Geografi)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info & Tanpa Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-C1">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-C1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Gwyneth</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Lyra</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (5)</span></td><td>Biancha, Destinia, Hizkia, Gideon, Rut</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Weldy Borang, S.Pd</span> (Seni Budaya)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Keterangan</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-C2">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-C2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (4)</span></td><td>Anastasia Manginsihi, Arzan Bisa, Leyticia Rasuh, Presilia Antara</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa / TK (2)</span></td><td>Ariel Pianusa, Kesya Tawas</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Mner Weldy Borang</span> (Seni Budaya)<br><span class="teacher-info">Nci Sriastuty Asjhadi</span> (Kimia)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-H">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-H</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Stefina Masone, Novlyn Massie, Ovelia Andries</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Sarah Manora</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Gizza Manikome</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-A1">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-A1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Bravehard Miracelino Supit, Ricardo Elvan Wiku</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-F">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-F</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Khumaira Thaib, Imanuel Manuhua</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (4)</span></td><td>Dhimas Mangadikon, Ghiofano Poluakan, Imelda Delosreyes, Messi Izzak</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Vanti Kailas S.Pd</span><br><span class="teacher-info">Nci Dorothea Wulanda Dumanaw</span></td>
-                            <td>Vanti: Tanpa Info<br>Dorothea: Izin Pembimbingan FLS3N</td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="X-A">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-A</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Abdul Razaq, Abigail Tumbel, Queenzly Sangi</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Fadil Ishak</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-D">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-D</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (4)</span></td><td>Gisella Mokodompis, Hapizh Mangkona, Richard Lengkey, Estefano Ambar</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (5)</span></td><td>Joval Bansaleng, Clerens Pateh, Jonathan Mahalubi, Muhammad Bilal, Muhammad Dwi Kanna</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Mner Cris</span><br><span class="teacher-info">Enci Kristina</span></td>
-                            <td>Cris: Sibuk Melatih<br>Kristina: Tanpa Info</td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-A2">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-A2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Bayu Segara, Novena Rahajaan</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Diego Geta</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Dorothea Wulandea Lumanaw</span></td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-C2">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-C2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>M Dzakwa Daffa Rizqullah Wijaya, Zivilla Altji Vanda Lombo, Rizky Mutiara Rahmadani Muchtar</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Meilinzzy Marriah Mantiri, Imanuel Walone</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Alui Chrisma Lombu, S.Pd</span> (Seni Budaya jam 4,5)<br><span class="teacher-info">Muhammad Mangantar, M.Pd</span> (Agama Islam jam 9,10)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="X-C">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-C</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Christy Sajow</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa / TK (1)</span></td><td>Syafila Nimati</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td>-</td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-A2">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-A2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>David Juan Immanuel Pangalila, Gabriel Teofani Alexander Bukanaung, Praygift Alfa Putra Tuter</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Cessar Syaputra Kumarurung (Paskib), Giorgio Mabuka (Paskib), Marlev Ryvlan Kenjiro Lahagu (Paskib)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Maam Astryana Tumiwa</span> (B. Inggris TL)</td>
-                            <td>Ada Tamu Guru Bhs Inggris dari Smagir</td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-C1">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-C1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Michelle Manaroinsong</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (12)</span></td><td>Adinda Lerah, Agnes Malohing, Albenus Bawensel, Andrea Rompas, Cloudio Antonio, Frannly Sumarauw, Leroy Maliota, Naysa Tinangon, Preisy Mewengkang, Queency Tumurang, Ridho Lintuhaseng, Syahnazwa Pilomonu</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Feranica Kalumata, S.Pd</span> (Biologi)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-E">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-E</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (4)</span></td><td>Raihan Adnan Najib Yusuf, Sikri Syela Lidia Aimbu, Renita S Bowontari, Kasi Yanti Hamzah</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Aldila Zaenal Manga</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (3)</span></td><td>Bintang Mahardika Ridwan, Mohammad Nazril Tahir, Putri Wisya Hujuala</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Mner Weldy Satria Christian Borang, S.Pd</span> (Seni Budaya)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="X-B">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-B</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Fayvi Lahinda</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (3)</span></td><td>Jayden Manope, Muhammad Alfarizi, Zaviera Lombone</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Ryya</span> (Sejarah)</td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-F1">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-F1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Gracia Sumalenda, Natzwa Rafi, Saylend Sembung</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Delryks Mamadoa, Fresci Adaong, Militia Sidete</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Jelita Lamadju</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td>-</td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="X-G">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-G</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Quenshe Sambil</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Tenny Boyke Pasuma</span> (Sejarah)</td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XII-B1">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XII-B1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (5)</span></td><td>Thalita Sangkop, Gizela Musak, Julven Lahunduitan, Aliyah Sanros, Ceysi Rauf</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Lovely Selah</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Muhhamad Afgan Bulotio</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="X-F">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">X-F</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Aprillian Sintia Lumeohe</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Guru Geografi</span></td>
-                            <td>Belum pernah masuk (belum tahu nama)</td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-B2">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-B2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Magfirah Tegoh, Milithia Lapasia</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (6)</span></td><td>Andreas Luntungan, Armilda Anggraeini, Holyqueen Koagow, Jiliano Manohas, Julia Tarore, Keren Lekatompessy</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Griseyla Amarang, Kemal Pondaag</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Dorothea Lumanaw</span> (Informatika)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Senin" data-kelas="XI-A1">
-                            <td>Senin, 03/08/26</td><td><span class="class-badge">XI-A1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Deril Turungku, Marvellindo Damisi</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Amel Mitusala, Christania Sahid, Kanaya Rampala</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Alvaro Achmad</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nocry L Rindengan S.Pd</span> (Pendidikan Pancasila)</td>
-                            <td>Membimbing 4 Pilar (Ada Tugas)</td>
-                        </tr>
-
-                        <!-- SELASA, 4 AGUSTUS 2026 -->
-                        <tr data-hari="Selasa" data-kelas="XII-C1">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-C1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (4)</span></td><td>Farsela, Jose, Gideon, Safira</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Windira</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (6)</span></td><td>Hiskia, Frelita, Anggraini, Siti, Cherril, Fahri</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Ocsilya Sahempa, S.Pd</span> (B. Indonesia)</td>
-                            <td>Technical Meeting FLS3N</td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-D">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-D</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (5)</span></td><td>Muhammad Dwi Akbar Kanna, Sergio Yosias Kurama, Nikita Putri Risdianto, Yebrian Claos Bawotong, Clerens Pateh</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (3)</span></td><td>Aliya Anatasya Yusuf Hau, Daniel Gunther Anthoni, Putri Diko</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Chairunnisa Khairupan, S.Pd</span> (B. Inggris jam 1-3)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XI-F2">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-F2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (5)</span></td><td>Erin Kasaluhe, Andi Achmad, Achmad Muchtar, Muhammad Nuzululrizky, Queen Tinahu</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Jibert Mangetik, Syahril Marampung</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-C2">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-C2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Anastasia Manginsihi, Nabilah Fitrany</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Chinera Korban, Febiano Larane</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa / TK (2)</span></td><td>Avrilzhe Nongka, Khairunnisa Hurudji</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Amanda Patras</span> (B. Inggris)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-G2">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-G2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Rahmad Kadir, Sara Aruperes</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Novita Kalua, Juliver Morahing</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (4)</span></td><td>Deden Ngadi, Alif Sulaeman, Zainal Dali, Juliet Gomies</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (1)</span></td><td>Tania Pangadilang (jam 6,7)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Angelsvina Datalamon</span> (Sosiologi jam 4,5)</td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XI-A1">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-A1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Electra Mandagi, Lionel Paraeng, Leonel Noya</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (6)</span></td><td>Douminique Kawinda, Putra Saraminang, Amel Mitusala (Paskib), Christania Sahid (Paskib), Kanaya Rampala (Paskib), Joael Dandels (Lomba)</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Novandro Manoppo</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Yulastri Diamanis S.pd</span> (B. Indonesia)</td>
-                            <td>Mendampingi FLS3N (Ada Tugas)</td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-K">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-K</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Leonardus Lermatin, Fharadila Sukri</td></tr>
-                                        <tr><td><span class="pill pill-izin">Terlambat (3)</span></td><td>Ginansyah Kuera, Marvel Wantah, Jilly Takainginang</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Tjia Makadada</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-A2">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-A2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Marchela Hingide, Muhammad Rizal, Apriliyani Hamiri</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Andrean Sapetu (FLS3N)</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa / TK (1)</span></td><td>Ibrohim Sultan</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Kristina Br.Situmeang, S.Pd</span> (Sejarah TL jam 1,2)<br><span class="teacher-info">Weldy Borang, S.Pd</span> (Seni Budaya jam 3,4)<br><span class="teacher-info">Dorothea Lumanaw, S.Pd</span> (Informatika jam 8,10)</td>
-                            <td>Kristina & Weldy: Tanpa Info<br>Dorothea: Mendampingi FLS3N</td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-A">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-A</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Abdul Antuke, Abigail Tumbel, Muhamad Alkatiri</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Abdul Razaq, Fadil Ishak</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (2)</span></td><td>Faiz Ahnaf (jam 1), Giovanni Hamel (jam 1,4,9,10)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-A1">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-A1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (5)</span></td><td>Fernando Gakoro, Irgie Maloringan, Renata Sipayung, Ricardo Wiku, Rizky Winowatan</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Matthew Supit</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Anindira Fajria</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Ryya Candra, S.Pd</span> (Sejarah TL jam 9,10)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-G1">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-G1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Ahmad Sakudu, Anugrah Ramadhan</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Shalomitha Asmara</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Riska Legrans, Elvira Lento</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (3)</span></td><td>Muhammad Yandji (jam 1-3,7-10), Muhammad Magau (jam 1-3), Praycello Roos (jam 7-10)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Angelsvina Datalamon</span> (Sosiologi jam 1-3)</td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-G">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-G</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Bilqies Dandu, Kiana Karundeng, Pricilia Pieter</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (1)</span></td><td>Christian Silangen (jam 6-10)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-H">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-H</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Dameria Dalentang, Asmara Umar</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (1)</span></td><td>Hugo Mawuntu</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Yunita Aronde S.Pd</span> (B. Indonesia)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-B">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-B</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Agrily Andries, Zaviera Lombone</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Dumaria Warouw</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-I">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-I</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Marcello Tumei</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Carolina Masihor, S.Pd</span></td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-C3">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-C3</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Bilqies Saniyuda, Rafael Metusala, Nurul Pratiwi</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Joy Nagere</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Syahban Marampung</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td>-</td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-E">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-E</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Asri Tri Syafa Tumbol</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Carolina Masihor S.Pd</span> (Ekonomi)</td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-F">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-F</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Khumaira Thaib, Isabella Momuntu</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Mirakhel Masiri</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (4)</span></td><td>Dhimas Mangadikon, Imelda Delosreyes, Ghiofano Poluakan, Muhammad Fadil Aprilio</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XI-B3">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-B3</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Chilya Agustina, Kaila Markus, Whitney Bawotong</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Yulastri Diamanis S.Pd</span> (FLS3N - Diberi Tugas)<br><span class="teacher-info">Mner Alui Chrisman Lombu, S.Pd</span> (FLS3N - Tanpa Tugas)</td>
-                            <td>FLS3N</td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XI-E">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-E</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (4)</span></td><td>Raihan Adnan Najib Yusuf, Sikri Syela Lidia Aimbu, Renita S Bowontari, Cheryn Putri Wahellmyna Gabrisch</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (3)</span></td><td>Euginia Sherily Lahinda, Putri Wisya Hujuala, Siti Sahmudin</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Carolina Gloria Masihor</span> (Ekonomi)</td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-C">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-C</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Rizky Cornelez, Mariana Warow</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Ryya Candra S.Pd</span> (Sibuk di R. Kepsek Ada Tamu Inspektorat Gubernur)<br><span class="teacher-info">Mner Simon Tegel S.Pd</span></td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XI-C1">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-C1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (4)</span></td><td>Abigail Suawah, Callysta Mailangkay, Fadhilah Cahyarani, Tsarwah Ohihia</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (15)</span></td><td>Adinda, Albenus, Andrea, Cloudio, Frannly, Helena, Kayla, Leroy, Lyonel, Naysa, Preisy, Queency, Raffa, Ridho, Syahnazwa (Paskib/FLS3N)</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Musdalifah Bakari</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Dich Budiman, S.Pd</span> (B. Indonesia jam 6-8)</td>
-                            <td><span class="pill pill-tugas">FLS3N & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XI-C2">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-C2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Ahmad Zulkifri Putra</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Alvino J'lou Kasenda, Jerusalem Cesare Bunaen</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Dich Rene Algita Juniester Budiman, S.Pd</span> (B. Indonesia jam 3-5)</td>
-                            <td>Tugas Luar & Diberi Tugas</td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-H">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-H</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin / Sakit (4)</span></td><td>Eureka Tindige, Ovelia Andris, Sarah Manora, Serafine Bangsa</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa / TK (3)</span></td><td>Gizza Manikome, Danas Suminarsono, Richard Lasut</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Chairunnisa Kairupan, S.Pd</span> (B. Inggris TL)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XI-A2">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-A2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Cessar Syaputra Kumarurung (Paskib), Giorgio Mabuka (Paskib), Marlev Ryvlan Kenjiro Lahagu (Paskib)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Dorothea Lumanaw</span> (Informatika)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XI-F1">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XI-F1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Saylend Sambung</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Delryks Mamadoa (Paskib), Fresci Adaong (Paskib), Militia Sidete (Paskib)</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Cliv Matoneng</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Lesawengan Angelia</span><br><span class="teacher-info">Nci Aulia Clastman Lombu</span></td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info & Tanpa Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="XII-B1">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">XII-B1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Thalita Sangkop, Firman Naki, Marvel Budiman</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Cliff Tewal</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Lera</span> (B. Indonesia)</td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Selasa" data-kelas="X-F">
-                            <td>Selasa, 04/08/26</td><td><span class="class-badge">X-F</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Russel Rapar</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Maylin Haerani</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Hadir</span></td>
-                        </tr>
-
-                        <!-- RABU, 5 AGUSTUS 2026 -->
-                        <tr data-hari="Rabu" data-kelas="XI-F2">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-F2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Sarifa Ismail</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (5)</span></td><td>Andita Timbalo (jam 8-10 Geografi), Kartika Montu, Lovely Untu, Mutiara Amasi, Nurul Husna</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (6)</span></td><td>Cintamy Benaino (Agama), Muhammad Hifni (Geografi), Muhammad Daffa Nuzululrizky (Geografi), Queen Tinahu (Agama), Syahril Marampung (Geografi), Felovely Katiho (Agama)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XII-C1">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-C1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Cherill, Nazwa</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Naysila</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Fritz Embongbulan, S.Pd</span> (Matematika)</td>
-                            <td>Kegiatan Guru-Guru Matematika</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XII-H">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-H</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Stefina Masone</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa / TK (1)</span></td><td>Gizza Manikome</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Anti Ahualambung S.Pd</span> (B. Inggris Wajib)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info & Tanpa Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-G">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-G</span></td>
-                            <td><span class="pill pill-tugas">Siswa Masuk Semua</span></td><td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-I">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-I</span></td>
-                            <td><span class="pill pill-tugas">Siswa Hadir Semua</span></td>
-                            <td><span class="teacher-info">Nci Yunita Aronde, S.Pd</span></td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XII-C2">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-C2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Anastasia Manginsihi, Presilia Antara</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Febiano Larane</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa / TK (2)</span></td><td>Kesya Tawas, Khairunnisa Hurudji</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Anggraini Puspitasari</span> (Geografi)</td>
-                            <td>Mendampingi FLS3N & Diberi Tugas</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XII-A1">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-A1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Agustinus Ambat, Ricardo Wiku</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Jovi Tatanude, Nadila Sompie</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Bravehard Supit</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Filia Bawole</span> (Informatika - Kegiatan Lab)<br><span class="teacher-info">Nci Ryya Candra</span> (Sejarah TL - Diberi Tugas)</td>
-                            <td>Filia: Kegiatan Lab<br>Ryya: Diberi Tugas</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-K">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-K</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Marvelino Makawowor, Yoel Lombontariang</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (1)</span></td><td>Jeril Ibrahim (jam 6-10)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Hadir</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XI-B2">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-B2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (4)</span></td><td>Armilda Anggraeini, Holyqueen Koagow, Julia Tarore, Keren Lekatompessy</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Martiwi Mokodongan</span> (Sastra Indo)<br><span class="teacher-info">Enci Sriastuty Asjhadi</span> (Kimia)<br><span class="teacher-info">Enci Dorothea Lumanaw</span> (Informatika)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Keterangan</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XII-B1">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-B1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Eldifo Tumbio</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Kevin Tinentang</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (5)</span></td><td>Lovely Selah, Thalita Sangkop, Marvel Budiman, Afgan Bugis, Prisca Kaunang</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Mner Weldy</span> (Seni Budaya)<br><span class="teacher-info">Mner Fredy Takalamingan</span> (Fisika)</td>
-                            <td>Weldy: Tanpa Keterangan<br>Fredy: Tugas Luar Lab Komputer & Cabdin Minut Bitung</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XII-A2">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-A2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Andrean Sapetu (FLS3N), Ellovier Dandel (Paskib), Bayu Segara (Pramuka)</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa / TK (2)</span></td><td>Ibrohim Sultan, Geovani Johanis</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (1)</span></td><td>Steve Rentandatu (Biologi jam 6,7)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Amanda Marlina Patras</span> (B. Inggris jam 8-10)</td>
-                            <td><span class="pill pill-tugas">Ada Kesibukan & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XI-A1">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-A1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Andrew Umboh, Leytichia Londo, Dominique Kawinda</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Amel Mitusala (Paskib), Christania Sahid (Paskib), Kanaya Rampala (Paskib)</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Alvaro Achmad, Muhammad Rizqianto</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Christy Bogia</span> (Matematika TL)<br><span class="teacher-info">Nci Sriastuty Asjhadi</span> (Kimia)</td>
-                            <td>Christy: Rapat Guru di Lab<br>Sriastuty: Tanpa Keterangan</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-H">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-H</span></td>
-                            <td><span class="pill pill-tugas">Siswa Hadir Semua</span></td>
-                            <td><span class="teacher-info">Yunita Aronde S.Pd</span> (B. Indonesia)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Info</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XI-C2">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-C2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Aditya Prasetyo, Jerusalem Cesare Bunaen</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Charly Charles Johnry Koloay, S.Pd</span> (PJOK jam 3,4)<br><span class="teacher-info">Vanti Novita Kailas, S.Pd</span> (Ekonomi jam 8-10)</td>
-                            <td>Charly: Diberi Tugas<br>Vanti: Tanpa Info</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XII-G2">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-G2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Delima Anggraini, Juliet Gomies, Sara Aruperes</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Abriano Baginda, Juliver Morahing</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Nikita Gandaria, Prita Lakuhati</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Fanda Kambey</span> (Ekonomi jam 3-5)<br><span class="teacher-info">Mner Chrisman Lombu</span> (Seni Budaya jam 6,7)<br><span class="teacher-info">Enci Afke Sawel</span> (B. Indo TL jam 8-10)</td>
-                            <td>Fanda: Tanpa Info<br>Chrisman: Izin Ada Kegiatan<br>Afke: Diberi Tugas</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-A">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-A</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Jordan Hasan (jam 9,10 Agama), Lenita Bawole (jam 9,10 Agama)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Fransisce Lera</span> (B. Indonesia)<br><span class="teacher-info">Enci Astryana Tumiwa</span> (B. Inggris)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Keterangan</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XI-C1">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-C1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (3)</span></td><td>Callysta Mailangkay, Princess Pongoh, Raffa Fabanyo</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (13)</span></td><td>Adinda, Albenus, Andrea, Cloudio, Frannly, Helena, Leroy, Lyonel, Naysa, Preisy, Queency, Ridho, Syahnazwa (Paskib/Lomba)</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (1)</span></td><td>Musdalifah Bakari</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td>-</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-C">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-C</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Addhika Lahaja, Christy Sajow</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Bolos (7)</span></td><td>Fabian Tatalede (jam 1-10), Amabel Tangkilisan (jam 1-10), Gretsy Zifarah (jam 1-10), Juwita Said (jam 6-10), Pricil Israel (jam 1-10), Zievelin Takapento (jam 6-10), Fauzan Adam (jam 8-10)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Mner Nocry Rindengan S.Pd</span><br><span class="teacher-info">Enci Dra. Femmy Maramis</span></td>
-                            <td><span class="pill pill-tugas">Tanpa Keterangan & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-F">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-F</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Cahaya Wulan</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Mner Sharly Koloay S.Pd</span> (PJOK - Ada Kegiatan)<br><span class="teacher-info">Mner Noprin Puasa S.Pd</span> (Matematika - Ada Kegiatan)<br><span class="teacher-info">Yunita Aronde S.Pd</span> (B. Indonesia)</td>
-                            <td>Yunita: Tanpa Keterangan</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XI-A2">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-A2</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Cessar Syaputra Kumarurung (Paskib), Giorgio Mabuka (Paskib), Marlev Ryvlan Kenjiro Lahagu (Paskib)</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Mner Simon Tegel</span> (MTK Wajib)</td>
-                            <td><span class="pill pill-no-tugas">Tanpa Keterangan</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-B">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-B</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Naura Makonah</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Zaviera Lombone</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>-</td><td><span class="pill pill-tugas">Semua Guru Masuk</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="X-E">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">X-E</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Nazriel Faried Buata</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Charly Koloay</span> (PJOK - Batal Praktek Ada Kegiatan)<br><span class="teacher-info">Femi Maramis</span> (B. Indonesia)</td>
-                            <td>Femi: Tanpa Info & Tanpa Tugas</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XI-E">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-E</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (2)</span></td><td>Renita S Bowontari, Siti Sahmudin</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (1)</span></td><td>Lyonel Kuera</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Enci Christy Bogia</span> (MTK TL)<br><span class="teacher-info">Enci Dik Budiman</span> (B. Indonesia)</td>
-                            <td><span class="pill pill-tugas">Ada Info & Diberi Tugas</span></td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XI-B3">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XI-B3</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (1)</span></td><td>Jericho Dalope</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (3)</span></td><td>Marsya Daniel, Chilya Agustina, Whitney Bawotong</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Noprin San Puasa S.Pd M.Pd MM</span> (Matematika)</td>
-                            <td>-</td>
-                        </tr>
-                        <tr data-hari="Rabu" data-kelas="XII-G1">
-                            <td>Rabu, 05/08/26</td><td><span class="class-badge">XII-G1</span></td>
-                            <td>
-                                <table class="inner-student-table">
-                                    <thead><tr><th style="width: 25%;">Status</th><th>Nama Siswa</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><span class="pill pill-sakit">Sakit (4)</span></td><td>Hasna Abdjul, Lhaura Lembang, Shalomitha Asmara, Elvira Lento</td></tr>
-                                        <tr><td><span class="pill pill-izin">Izin (2)</span></td><td>Margareta Kaumbur, Nayshella Lombontariang</td></tr>
-                                        <tr><td><span class="pill pill-alpa">Alpa (2)</span></td><td>Andini Cussoy, Gabriela Wengke</td></tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td><span class="teacher-info">Nci Dich Budiman</span> (B. Indo - Ada Tugas)<br><span class="teacher-info">Nci Fanda Kambey</span> (Ekonomi)<br><span class="teacher-info">Mner Alui Lombu</span> (Seni Budaya)</td>
-                            <td>Fanda & Alui: Tanpa Info</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- TAB 2: REKAPITULASI KETIDAKHADIRAN GURU -->
-        <div id="tab-guru-absent" class="tab-content">
-            <div class="filter-card">
-                <div class="filter-group" style="width: 100%;">
-                    <label for="searchGuruInput"><i class="fa-solid fa-magnifying-glass"></i> Cari Nama Guru / Mata Pelajaran:</label>
-                    <input type="text" id="searchGuruInput" onkeyup="filterGuruTable()" placeholder="Ketik nama guru atau mapel..." style="flex: 1;">
-                </div>
-            </div>
-
-            <div class="table-card">
-                <table id="guruAbsentTable">
-                    <thead>
-                        <tr>
-                            <th style="width: 22%;">Nama Guru</th>
-                            <th style="width: 18%;">Mata Pelajaran</th>
-                            <th style="width: 15%;">Tanggal Ketidakhadiran</th>
-                            <th style="width: 25%;">Kelas Ditinggalkan (Rincian Harian)</th>
-                            <th style="width: 20%;">Keterangan Alasan Ketidakhadiran</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong class="teacher-info">Weldy Satria Christian Borang, S.Pd</strong></td><td>Seni Budaya</td><td><span class="pill pill-izin">Senin, 03/08/26</span><br><span class="pill pill-izin">Selasa, 04/08/26</span><br><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XII-C1, XII-C2, XII-A2, XI-E, XII-B1</td><td>Tanpa Keterangan / Sebagian Ada Tugas</td></tr>
-                        <tr><td><strong class="teacher-info">Dorothea Wulandea Lumanaw, S.Pd</strong></td><td>Informatika</td><td><span class="pill pill-izin">Senin, 03/08/26</span><br><span class="pill pill-izin">Selasa, 04/08/26</span><br><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XII-F, XII-A2, XI-B2, XI-A2</td><td>Izin Mendampingi Siswa FLS3N</td></tr>
-                        <tr><td><strong class="teacher-info">Anjelsvina Datalamon, S.Pd</strong></td><td>Sosiologi</td><td><span class="pill pill-izin">Senin, 03/08/26</span><br><span class="pill pill-izin">Selasa, 04/08/26</span></td><td>X-H, X-I, XII-G2, XII-G1</td><td> Memberi Tugas Kepada Siswa</td></tr>
-                        <tr><td><strong class="teacher-info">Alui Chrisma Lombu, S.Pd</strong></td><td>Seni Budaya</td><td><span class="pill pill-izin">Senin, 03/08/26</span><br><span class="pill pill-izin">Selasa, 04/08/26</span><br><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XI-C2, XII-D, XI-B3, XII-G2, XII-G1</td><td>Kegiatan / Pendampingan FLS3N</td></tr>
-                        <tr><td><strong class="teacher-info">Fransisce Lera, S.Pd</strong></td><td>Bahasa Indonesia</td><td><span class="pill pill-izin">Senin, 03/08/26</span><br><span class="pill pill-izin">Selasa, 04/08/26</span><br><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XII-G2, XII-B1, X-A</td><td>Memberikan Tugas / Tanpa Info</td></tr>
-                        <tr><td><strong class="teacher-info">Yunita Aronde, S.Pd</strong></td><td>Bahasa Indonesia</td><td><span class="pill pill-izin">Selasa, 04/08/26</span><br><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>X-H, X-I, X-F</td><td>Tanpa Informasi Ketidakhadiran</td></tr>
-                        <tr><td><strong class="teacher-info">Sriastuty Asjhadi, S.Pd</strong></td><td>Kimia</td><td><span class="pill pill-izin">Senin, 03/08/26</span><br><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XII-C2, XI-A1, XI-B2</td><td>Tanpa Informasi Ketidakhadiran</td></tr>
-                        <tr><td><strong class="teacher-info">Carolina Gloria Masihor, S.Pd</strong></td><td>Ekonomi</td><td><span class="pill pill-izin">Senin, 03/08/26</span><br><span class="pill pill-izin">Selasa, 04/08/26</span></td><td>X-I, X-E, XI-E</td><td>Ada Informasi & Memberikan Tugas</td></tr>
-                        <tr><td><strong class="teacher-info">Chairunnisa Khairupan, S.Pd</strong></td><td>Bahasa Inggris TL</td><td><span class="pill pill-izin">Selasa, 04/08/26</span></td><td>XII-D, XII-H</td><td>Tanpa Informasi Ketidakhadiran</td></tr>
-                        <tr><td><strong class="teacher-info">Charly Charles Johnry Koloay, S.Pd</strong></td><td>PJOK</td><td><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XI-C2, X-E, X-F</td><td>Ada Kegiatan Sekolah</td></tr>
-                        <tr><td><strong class="teacher-info">Fredynandus Takalamingan, S.Si</strong></td><td>Fisika</td><td><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XII-B1</td><td>Tugas Luar / Kegiatan Lab & Cabdin Minut Bitung</td></tr>
-                        <tr><td><strong class="teacher-info">Noprin San Puasa, S.Pd M.Pd MM</strong></td><td>Matematika</td><td><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>X-F, XI-B3</td><td>Ada Kegiatan</td></tr>
-                        <tr><td><strong class="teacher-info">Fritz Embongbulan, S.Pd</strong></td><td>Matematika</td><td><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XII-C1</td><td>Kegiatan Guru-Guru Matematika</td></tr>
-                        <tr><td><strong class="teacher-info">Dich Rene Algita Juniester Budiman, S.Pd</strong></td><td>Bahasa Indonesia</td><td><span class="pill pill-izin">Selasa, 04/08/26</span><br><span class="pill pill-izin">Rabu, 05/08/26</span></td><td>XI-C1, XI-C2, XI-E, XII-G1</td><td>Tugas Luar / FLS3N (Memberi Tugas)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2026 SMA Negeri 2 Bitung. All Rights Reserved. Designed for Educational Leadership.
-    </footer>
-
-    <!-- JAVASCRIPT ANIMASI & LOGIKA TABEL -->
-    <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
-                startCounters();
-                populateKelasDropdown();
-            }, 1500);
-        });
-
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            <h1 class="fw-bold mb-2">Dashboard Kurikulum</h1>
+            <h3 class="fw-light mb-3">SMA Negeri 2 Bitung</h3>
+            <p class="lead fs-6 mb-4">
+                Sistem Informasi Monitoring Kurikulum, Kehadiran, dan Analisis Akademik berbasis data real-time untuk mendukung efektivitas pembelajaran Tahun Ajaran 2026/2027.
+            </p>
             
-            element.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
+            <div class="profile-badge mb-4">
+                <div class="profile-img"><i class="fa-solid fa-user"></i></div>
+                <div class="text-start">
+                    <h6 class="mb-0 fw-bold">Fredynandus Takalamingan, S.Si</h6>
+                    <small>Wakil Kepala Sekolah Bidang Kurikulum</small>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <button class="btn btn-warning btn-lg fw-semibold px-4" onclick="enterDashboard()">
+                    <i class="fa-solid fa-gauge-high me-2"></i> Masuk Dashboard
+                </button>
+                <button class="btn btn-outline-light btn-lg px-4" onclick="alert('SMA Negeri 2 Bitung - Berkarakter, Unggul, dan Berprestasi.')">
+                    <i class="fa-solid fa-school me-2"></i> Profil Sekolah
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="d-flex">
+        
+        <!-- 3. SIDEBAR MENU DENGAN NAVIGATION FIX -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-school fa-2x text-warning mb-2"></i>
+                <h6 class="fw-bold mb-0">SMAN 2 BITUNG</h6>
+                <small class="text-muted">Kurikulum Control Center</small>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li class="nav-item-btn active" id="menu-top">
+                    <a onclick="scrollToElement('sec-top', this)"><i class="fa-solid fa-house"></i> Dashboard Utama</a>
+                </li>
+                <li class="nav-item-btn">
+                    <a onclick="scrollToElement('sec-kehadiran-siswa', this)"><i class="fa-solid fa-user-graduate"></i> Kehadiran Siswa</a>
+                </li>
+                <li class="nav-item-btn">
+                    <a onclick="scrollToElement('sec-kehadiran-guru', this)"><i class="fa-solid fa-chalkboard-user"></i> Kehadiran Guru</a>
+                </li>
+                <li class="nav-item-btn">
+                    <a onclick="scrollToElement('sec-analisis', this)"><i class="fa-solid fa-chart-line"></i> Analisis Akademik</a>
+                </li>
+                <li class="nav-item-btn">
+                    <a onclick="scrollToElement('sec-laporan', this)"><i class="fa-solid fa-file-invoice"></i> Cetak Laporan</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- PAGE CONTENT -->
+        <div id="content">
+            
+            <!-- 2. HEADER BAR -->
+            <div id="sec-top" class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm section-target">
+                <div>
+                    <h4 class="fw-bold mb-0 text-primary">Dashboard Kurikulum</h4>
+                    <small class="text-muted">Selamat Datang, <strong>Fredynandus Takalamingan, S.Si</strong> (Wakasek Kurikulum)</small>
+                </div>
+                <div class="text-end">
+                    <h6 class="fw-bold mb-0" id="currentDate">-</h6>
+                    <small class="text-primary fw-bold" id="clock">00:00:00 WITA</small>
+                </div>
+            </div>
+
+            <!-- TAB TANGGAL MONITORING -->
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-body p-2">
+                    <ul class="nav nav-pills nav-fill" id="dateTabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="tab-senin" data-bs-toggle="tab" data-bs-target="#data-senin" type="button" onclick="updateSummary('senin')">
+                                <i class="fa-solid fa-calendar-day me-2"></i> Senin, 3 Agustus 2026
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="tab-selasa" data-bs-toggle="tab" data-bs-target="#data-selasa" type="button" onclick="updateSummary('selasa')">
+                                <i class="fa-solid fa-calendar-day me-2"></i> Selasa, 4 Agustus 2026
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="tab-rabu" data-bs-toggle="tab" data-bs-target="#data-rabu" type="button" onclick="updateSummary('rabu')">
+                                <i class="fa-solid fa-calendar-day me-2"></i> Rabu, 5 Agustus 2026
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4. RINGKASAN HARI INI (SUMMARY CARDS) -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-2">
+                    <div class="card card-stat bg-primary text-white p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-white-50">Hadir</small>
+                                <h3 class="fw-bold mb-0" id="statHadir">920</h3>
+                            </div>
+                            <div class="icon-shape"><i class="fa-solid fa-user-check"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card card-stat bg-warning text-dark p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-dark-50">Sakit</small>
+                                <h3 class="fw-bold mb-0" id="statSakit">0</h3>
+                            </div>
+                            <div class="icon-shape"><i class="fa-solid fa-bed"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card card-stat bg-info text-dark p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-dark-50">Izin</small>
+                                <h3 class="fw-bold mb-0" id="statIzin">0</h3>
+                            </div>
+                            <div class="icon-shape"><i class="fa-solid fa-envelope-open-text"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card card-stat bg-danger text-white p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-white-50">Alpha</small>
+                                <h3 class="fw-bold mb-0" id="statAlpa">0</h3>
+                            </div>
+                            <div class="icon-shape"><i class="fa-solid fa-user-xmark"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card card-stat bg-secondary text-white p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-white-50">Bolos / TK</small>
+                                <h3 class="fw-bold mb-0" id="statBolos">0</h3>
+                            </div>
+                            <div class="icon-shape"><i class="fa-solid fa-person-walking-arrow-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card card-stat bg-dark text-white p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-white-50">Guru Inaktif</small>
+                                <h3 class="fw-bold mb-0" id="statGuru">0</h3>
+                            </div>
+                            <div class="icon-shape"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. GRAFIK KEHADIRAN -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-8">
+                    <div class="card border-0 shadow-sm p-3">
+                        <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-column text-primary me-2"></i>Tren Kehadiran Siswa (3-5 Agustus 2026)</h6>
+                        <canvas id="attendanceChart" height="120"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-3">
+                        <h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie text-primary me-2"></i>Proporsi Ketidakhadiran</h6>
+                        <canvas id="pieChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT UNTUK DATA REKAPAN HARIAN -->
+            <div class="tab-content" id="dateTabsContent">
+
+                <!-- ==================== TANGGAL 3 AGUSTUS 2026 ==================== -->
+                <div class="tab-pane fade show active" id="data-senin" role="tabpanel">
+                    
+                    <!-- 6. MONITORING KEHADIRAN PER KELAS -->
+                    <div class="card border-0 shadow-sm mb-4 section-target" id="sec-kehadiran-siswa">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-table me-2"></i>Rekap Ketidakhadiran Siswa - Senin, 3 Agustus 2026</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped border align-middle data-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Kelas</th>
+                                            <th>Sakit</th>
+                                            <th>Izin</th>
+                                            <th>Alpa</th>
+                                            <th>Bolos / TK</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>X.A</td><td>Abdul Razaq, Abigail Tumbel, Queenzly Sangi</td><td>Fadil Ishak</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-B</td><td>-</td><td>Fayvi Lahinda</td><td>Jayden Manope, Muhammad Alfarizi, Zaviera Lombone</td><td>-</td></tr>
+                                        <tr><td>X-C</td><td>Christy Sajow</td><td>-</td><td>-</td><td>Syafila Nimati (Tanpa Keterangan)</td></tr>
+                                        <tr><td>X-E</td><td>Atiya Ramadhani, Marcela C.A Mananohas, Solagracia F.J Turere</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-F</td><td>Aprillian Sintia Lumeohe</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-G</td><td>-</td><td>-</td><td>Quenshe Sambil</td><td>-</td></tr>
+                                        <tr><td>X.H</td><td>Arini Bawangung</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-I</td><td>Mikhaella Bangheli</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-K</td><td><span class="badge bg-success">Nihil (Hadir Semua)</span></td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-A1</td><td>Deril Turungku, Marvellindo Damisi</td><td>Amel Mitusala, Christania Sahid, Kanaya Rampala</td><td>Alvaro Achmad</td><td>-</td></tr>
+                                        <tr><td>XI-A2</td><td>David Juan Immanuel Pangalila, Gabriel Teofani Alexander Bukanaung, Praygift Alfa Putra Tuter</td><td>Cessar Syaputra Kumarurung, Giorgio Mabuka, Marlev Ryvlan Kenjiro Lahagu (Paskib)</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-B2</td><td>Magfirah Tegoh, Milithia Lapasia</td><td>Andreas Luntungan, Armilda Anggraeini, Holyqueen Koagow, Jiliano Manohas, Julia Tarore, Keren Lekatompessy</td><td>Griseyla Amarang, Kemal Pondaag</td><td>-</td></tr>
+                                        <tr><td>XI B3</td><td>Faradhila Risky, Alifa Tamara</td><td>Nur Naila Candra, Sherly Sandiata, Whitney Bawotong, Marcello Maliota, Chilya Agustina</td><td>Theresia Corneles</td><td>-</td></tr>
+                                        <tr><td>XI-C1</td><td>Michelle Manaroinsong</td><td>Adinda Lerah, Agnes Malohing, Albenus Bawensel, Andrea Rompas, Cloudio Antonio, Frannly Sumarauw, Leroy Maliota, Naysa Tinangon, Preisy Mewengkang, Queency Tumurang, Ridho Lintuhaseng, Syahnazwa Pilomonu</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-C2</td><td>M Dzakwa Daffa Rizqullah Wijaya, Zivilla Altji Vanda Lombo, Rizky Mutiara Rahmadani Muchtar</td><td>Meilinzzy Marriah Mantiri, Imanuel Walone</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-E</td><td>Raihan Adnan Najib Yusuf, Sikri Syela Lidia Aimbu, Renita S Bowontari, Kasi Yanti Hamzah</td><td>Aldila Zaenal Manga</td><td>Bintang Mahardika Ridwan, Mohammad Nazril Tahir, Putri Wisya Hujuala</td><td>-</td></tr>
+                                        <tr><td>XI-F1</td><td>Gracia Sumalenda, Natzwa Rafi, Saylend Sembung</td><td>Delryks Mamadoa, Fresci Adaong, Militia Sidete</td><td>Jelita Lamadju</td><td>-</td></tr>
+                                        <tr><td>XI-F2</td><td>Erin Kasaluhe, Griseldis Simpaen, Miracle Makausi</td><td>-</td><td>Jibert Mangetik</td><td>-</td></tr>
+                                        <tr><td>XII-A1</td><td>Bravehard Miracelino Supit, Ricardo Elvan Wiku</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XII-A2</td><td>Bayu Segara, Novena Rahajaan</td><td>Diego Geta</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XII-B1</td><td>Thalita Sangkop, Gizela Musak, Julven Lahunduitan, Aliyah Sanros, Ceysi Rauf</td><td>Lovely Selah</td><td>Muhhamad Afgan Bulotio</td><td>-</td></tr>
+                                        <tr><td>XII-C1</td><td>Gwyneth</td><td>Lyra</td><td>Biancha, Destinia, Hizkia, Gideon, Rut</td><td>-</td></tr>
+                                        <tr><td>XII-C2</td><td>Anastasia Manginsihi, Arzan Bisa, Leyticia Rasuh, Presilia Antara</td><td>-</td><td>-</td><td>Ariel Pianusa, Kesya Tawas (Tanpa Keterangan)</td></tr>
+                                        <tr><td>XII D</td><td>Gisella Mokodompis, Hapizh Mangkona, Richard Lengkey, Estefano Ambar</td><td>-</td><td>Joval Bansaleng, Clerens Pateh, Jonathan Mahalubi, Muhammad Bilal, Muhammad Dwi Kanna</td><td>-</td></tr>
+                                        <tr><td>XII G1</td><td>Velovexia Endey, Fanolen Esa, Anugrah Ramadhan, Andini Cusoy, Jeanica Walone, Giovani Bilindade, Meisilin Setia</td><td>Castino Kasehung</td><td>Jafrany Ante</td><td>-</td></tr>
+                                        <tr><td>XII G2</td><td>Azzahra Nuku, Fathir Otoluwa, Sara Aruperes</td><td>Cleo Suwito, Juliver Morahing, Alif Sulaeman</td><td>Prita Lakuhati, Yosia Mararoating</td><td>-</td></tr>
+                                        <tr><td>XII-F</td><td>Khumaira Thaib, Imanuel Manuhua</td><td>-</td><td>Dhimas Mangadikon, Ghiofano Poluakan, Imelda Delosreyes, Messi Izzak</td><td>-</td></tr>
+                                        <tr><td>XII-H</td><td>Stefina Masone, Novlyn Massie, Ovelia Andries</td><td>Sarah Manora</td><td>Gizza Manikome</td><td>-</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. MONITORING GURU TIDAK HADIR -->
+                    <div class="card border-0 shadow-sm mb-4 section-target" id="sec-kehadiran-guru">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="fw-bold mb-0 text-danger"><i class="fa-solid fa-user-slash me-2"></i>Monitoring Guru Tidak Hadir - Senin, 3 Agustus 2026</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover border align-middle data-table">
+                                    <thead class="table-secondary">
+                                        <tr>
+                                            <th>Kelas</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Nama Guru</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>X.H</td><td>PJOK</td><td>Jewels Hariawang, S.Pd</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>X.H</td><td>Sosiologi</td><td>Anjelsvina Datalamon, S.Pd</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>X-I</td><td>-</td><td>Nci Anjelsvina Datalamon, S.Pd</td><td>Ada informasi & memberikan tugas</td></tr>
+                                        <tr><td>X-E</td><td>Geografi</td><td>Anggraini Puspitasari, S.Pd</td><td>Tidak ada informasi & tidak memberikan tugas</td></tr>
+                                        <tr><td>X-F</td><td>Geografi</td><td>Anggraini Puspitasari, S.Pd</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>X-B</td><td>Sejarah</td><td>Enci Ryya</td><td>Ada informasi & memberikan tugas</td></tr>
+                                        <tr><td>X-G</td><td>Sejarah</td><td>Mner Tenny Boyke Pasuma</td><td>Ada informasi & memberikan tugas</td></tr>
+                                        <tr><td>XI-A1</td><td>Pendidikan Pancasila</td><td>Mner Nocry L. Rindengan, S.Pd</td><td>Membimbing 4 Pilar & memberikan tugas</td></tr>
+                                        <tr><td>XI-A2</td><td>B. Inggris Tingkat Lanjut</td><td>Ma'am Astryana Tumiwa</td><td>Ada tamu/guru B. Inggris dari Smagir</td></tr>
+                                        <tr><td>XI-B2</td><td>Informatika</td><td>Enci Dorothea Lumanaw</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XI-C1</td><td>Biologi</td><td>Feranica Kalumata, S.Pd</td><td>Tidak ada informasi kehadiran</td></tr>
+                                        <tr><td>XI-C2</td><td>Seni Budaya</td><td>Alui Chrisma Lombu, S.Pd (Jam 4,5)</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XI-C2</td><td>Agama Islam</td><td>Muhammad Mangantar, M.Pd (Jam 9,10)</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XI-E</td><td>Seni Budaya</td><td>Mner Weldy Satria Christian Borang, S.Pd</td><td>Tidak ada informasi kehadiran</td></tr>
+                                        <tr><td>XII-A2</td><td>-</td><td>Dorothea Wulandea Lumanaw</td><td>Tanpa keterangan ketidakhadiran</td></tr>
+                                        <tr><td>XII-C1</td><td>Seni Budaya</td><td>Weldy Borang, S.Pd</td><td>Tanpa keterangan ketidakhadiran</td></tr>
+                                        <tr><td>XII-C2</td><td>Seni Budaya</td><td>Mner Weldy Borang</td><td>Tidak ada informasi kehadiran</td></tr>
+                                        <tr><td>XII-C2</td><td>Kimia</td><td>Nci Sriastuty Asjhadi</td><td>Tidak ada informasi kehadiran</td></tr>
+                                        <tr><td>XII D</td><td>-</td><td>Mner Cris</td><td>Sibuk melatih siswa</td></tr>
+                                        <tr><td>XII D</td><td>-</td><td>Enci Kristina</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII-F</td><td>-</td><td>Nci Vanti Kailas, S.Pd</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII-F</td><td>-</td><td>Nci Dorothea Wulanda Dumanaw</td><td>Izin (Ada pembimbingan FLS3N)</td></tr>
+                                        <tr><td>XII G1</td><td>Sejarah</td><td>Mner Tenny</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII G2</td><td>B. Indonesia</td><td>Fransisce Lera (Jam 5,6,7)</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== TANGGAL 4 AGUSTUS 2026 ==================== -->
+                <div class="tab-pane fade" id="data-selasa" role="tabpanel">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-table me-2"></i>Rekap Ketidakhadiran Siswa - Selasa, 4 Agustus 2026</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped border align-middle data-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Kelas</th>
+                                            <th>Sakit</th>
+                                            <th>Izin</th>
+                                            <th>Alpa</th>
+                                            <th>Bolos / TK</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>X.A</td><td>Abdul Antuke, Abigail Tumbel, Muhamad Alkatiri</td><td>Abdul Razaq, Fadil Ishak</td><td>-</td><td>Bolos: Faiz Ahnaf (Jam 1), Giovanni Hamel (Jam 1, 4, 9, 10)</td></tr>
+                                        <tr><td>X-B</td><td>Agrily Andries, Zaviera Lombone</td><td>-</td><td>Dumaria Warouw</td><td>-</td></tr>
+                                        <tr><td>X-C</td><td>Rizky Cornelez, Mariana Warow</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-E</td><td>Asri Tri Syafa Tumbol</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-F</td><td>Russel Rapar</td><td>Maylin Haerani</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-G</td><td>Bilqies Dandu, Kiana Karundeng, Pricilia Pieter</td><td>-</td><td>-</td><td>Bolos: Christian Silangen (Jam 6-10)</td></tr>
+                                        <tr><td>X.H</td><td>-</td><td>Dameria Dalentang, Asmara Umar</td><td>-</td><td>Bolos: Hugo Mawuntu</td></tr>
+                                        <tr><td>X-I</td><td>Marcello Tumei</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-K</td><td>Leonardus Lermatin, Fharadila Sukri</td><td>-</td><td>Tjia Makadada</td><td>Terlambat: Ginansyah Kuera, Marvel Wantah, Jilly Takainginang</td></tr>
+                                        <tr><td>XI-A1</td><td>Electra Mandagi, Lionel Paraeng, Leonel Noya</td><td>Douminique Kawinda, Putra Saraminang, Amel Mitusala (Paskib), Christania Sahid (Paskib), Kanaya Rampala (Paskib), Joael Dandels (Lomba)</td><td>Novandro Manoppo</td><td>-</td></tr>
+                                        <tr><td>XI-A2</td><td>-</td><td>Cessar Syaputra Kumarurung, Giorgio Mabuka, Marlev Ryvlan Kenjiro Lahagu (Paskib)</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI B3</td><td>-</td><td>Chilya Agustina, Kaila Markus, Whitney Bawotong</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-C1</td><td>Abigail Suawah, Callysta Mailangkay, Fadhilah Cahyarani, Tsarwah Ohihia</td><td>Adinda Lerah, Albenus Bawensel, Andrea Rompas, Cloudio Antonio, Frannly Sumarauw, Leroy Maliota, Naysa Tinangon, Preisy Mewengkang, Queency Tumurang, Ridho Lintuhaseng, Syahnazwa Pilomonu (Paskib), Helena Silow (FLS3N), Kayla Palar, Lyonel Sondak, Raffa Fabanyo (FLS3N)</td><td>Musdalifah Bakari</td><td>-</td></tr>
+                                        <tr><td>XI-C2</td><td>Ahmad Zulkifri Putra</td><td>-</td><td>Alvino J'lou Kasenda, Jerusalem Cesare Bunaen</td><td>-</td></tr>
+                                        <tr><td>XI-E</td><td>Raihan Adnan Najib Yusuf, Sikri Syela Lidia Aimbu, Renita S Bowontari, Cheryn Putri Wahellmyna Gabrisch</td><td>-</td><td>Euginia Sherily Lahinda, Putri Wisya Hujuala, Siti Sahmudin</td><td>-</td></tr>
+                                        <tr><td>XI-F1</td><td>Saylend Sambung</td><td>Delryks Mamadoa, Fresci Adaong, Militia Sidete (Paskib)</td><td>Cliv Matoneng</td><td>-</td></tr>
+                                        <tr><td>XI-F2</td><td>Erin Kasaluhe, Andi Achmad, Achmad Muchtar, Muhammad Nuzululrizky, Queen Tinahu</td><td>-</td><td>Jibert Mangetik, Syahril Marampung</td><td>-</td></tr>
+                                        <tr><td>XII-A1</td><td>Fernando Gakoro, Irgie Maloringan, Renata Sipayung, Ricardo Wiku, Rizky Winowatan</td><td>Matthew Supit</td><td>Anindira Fajria</td><td>-</td></tr>
+                                        <tr><td>XII-A2</td><td>Marchela Hingide, Muhammad Rizal, Apriliyani Hamiri</td><td>Andrean Sapetu (FLS3N)</td><td>-</td><td>TK: Ibrohim Sultan</td></tr>
+                                        <tr><td>XII-B1</td><td>Thalita Sangkop, Firman Naki, Marvel Budiman</td><td>Cliff Tewal</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XII-C1</td><td>Farsela, Jose, Gideon, Safira</td><td>Windira</td><td>Hiskia, Frelita, Anggraini, Siti, Cherril, Fahri</td><td>-</td></tr>
+                                        <tr><td>XII-C2</td><td>Anastasia Manginsihi, Nabilah Fitrany</td><td>Chinera Korban, Febiano Larane</td><td>-</td><td>TK: Avrilzhe Nongka, Khairunnisa Hurudji</td></tr>
+                                        <tr><td>XII-C3</td><td>Bilqies Saniyuda, Rafael Metusala, Nurul Pratiwi</td><td>Joy Nagere</td><td>Syahban Marampung</td><td>-</td></tr>
+                                        <tr><td>XII-D</td><td>Muhammad Dwi Akbar Kanna, Sergio Yosias Kurama, Nikita Putri Risdianto, Yebrian Claos Bawotong, Clerens Pateh</td><td>-</td><td>Aliya Anatasya Yusuf Hau, Daniel Gunther Anthoni, Putri Diko</td><td>-</td></tr>
+                                        <tr><td>XII G1</td><td>Ahmad Sakudu, Anugrah Ramadhan</td><td>Shalomitha Asmara</td><td>Riska Legrans, Elvira Lento</td><td>Bolos: Muhammad Yandji (Jam 1-3,7-10), Muhammad Magau (Jam 1-3), Praycello Roos (Jam 7-10)</td></tr>
+                                        <tr><td>XII G2</td><td>Rahmad Kadir, Sara Aruperes</td><td>Novita Kalua, Juliver Morahing</td><td>Deden Ngadi, Alif Sulaeman, Zainal Dali, Juliet Gomies</td><td>Bolos: Tania Pangadilang (Jam 6 & 7)</td></tr>
+                                        <tr><td>XII-H</td><td>-</td><td>Eureka Tindige, Ovelia Andris, Sarah Manora, Serafine Bangsa</td><td>Gizza Manikome, Danas Suminarsono, Richard Lasut</td><td>-</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="fw-bold mb-0 text-danger"><i class="fa-solid fa-user-slash me-2"></i>Monitoring Guru Tidak Hadir - Selasa, 4 Agustus 2026</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover border align-middle data-table">
+                                    <thead class="table-secondary">
+                                        <tr>
+                                            <th>Kelas</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Nama Guru</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>X-C</td><td>-</td><td>Nci Ryya Candra, S.Pd</td><td>Ada info (tamu Inspektorat), memberikan tugas</td></tr>
+                                        <tr><td>X-C</td><td>-</td><td>Mner Simon Tegel, S.Pd</td><td>Ada info ketidakhadiran & memberikan tugas</td></tr>
+                                        <tr><td>X-E</td><td>Ekonomi</td><td>Carolina Masihor, S.Pd</td><td>Ada info ketidakhadiran & memberikan tugas</td></tr>
+                                        <tr><td>X.H</td><td>B. Indonesia</td><td>Yunita Aronde, S.Pd</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>X-I</td><td>-</td><td>Nci Carolina Masihor, S.Pd</td><td>Ada info ketidakhadiran & memberikan tugas</td></tr>
+                                        <tr><td>XI-A1</td><td>B. Indonesia</td><td>Enci Yulastri Diamanis, S.Pd</td><td>Mendampingi FLS3N & memberikan tugas</td></tr>
+                                        <tr><td>XI-A2</td><td>Informatika</td><td>Enci Dorothea Lumanaw</td><td>Tidak memberikan informasi ketidakhadiran</td></tr>
+                                        <tr><td>XI B3</td><td>-</td><td>Enci Yulastri Diamanis, S.Pd</td><td>Mendampingi FLS3N & memberikan tugas</td></tr>
+                                        <tr><td>XI B3</td><td>-</td><td>Mner Alui Chrisman Lombu, S.Pd</td><td>Mendampingi FLS3N & tidak memberikan tugas</td></tr>
+                                        <tr><td>XI-C1</td><td>B. Indonesia</td><td>Dich Budiman, S.Pd (Jam 6-8)</td><td>Tugas luar (FLS3N) & memberikan tugas</td></tr>
+                                        <tr><td>XI-C2</td><td>B. Indonesia</td><td>Dich Rene Algita Juniester Budiman, S.Pd (Jam 3-5)</td><td>Tugas luar & memberikan tugas</td></tr>
+                                        <tr><td>XI-E</td><td>Ekonomi</td><td>Enci Carolina Gloria Masihor</td><td>Ada info ketidakhadiran & memberikan tugas</td></tr>
+                                        <tr><td>XI-F1</td><td>-</td><td>Nci Lesawengan Angelia</td><td>Tidak ada informasi & tidak memberikan tugas</td></tr>
+                                        <tr><td>XI-F1</td><td>-</td><td>Nci Aulia Clastman Lombu</td><td>Tidak ada informasi & tidak memberikan tugas</td></tr>
+                                        <tr><td>XII-A1</td><td>Sejarah TL</td><td>Enci Ryya Candra, S.Pd (Jam 9,10)</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII-A2</td><td>Sejarah TL</td><td>Kristina Br. Situmeang, S.Pd (Jam 1,2)</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII-A2</td><td>Seni Budaya</td><td>Weldy Borang, S.Pd (Jam 3,4)</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII-A2</td><td>Informatika</td><td>Dorothea Lumanaw, S.Pd (Jam 8,10)</td><td>Izin mendampingi FLS3N</td></tr>
+                                        <tr><td>XII-B1</td><td>B. Indonesia</td><td>Nci Lera</td><td>Tidak ada informasi, memberikan tugas</td></tr>
+                                        <tr><td>XII-C1</td><td>B. Indonesia</td><td>Ocsilya Sahempa, S.Pd</td><td>Mengikuti technical meeting FLS3N</td></tr>
+                                        <tr><td>XII-C2</td><td>B. Inggris</td><td>Nci Amanda Patras</td><td>Tidak ada informasi kehadiran</td></tr>
+                                        <tr><td>XII-D</td><td>B. Inggris</td><td>Chairunnisa Khairupan, S.Pd (Jam 1-3)</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII G1</td><td>Sosiologi</td><td>Angelsvina Datalamon (Jam 1-3)</td><td>Tidak ada informasi, hanya memberi tugas</td></tr>
+                                        <tr><td>XII G2</td><td>Sosiologi</td><td>Angelsvina Datalamon (Jam 4,5)</td><td>Tidak ada informasi, hanya memberi tugas</td></tr>
+                                        <tr><td>XII-H</td><td>B. Inggris TL</td><td>Chairunnisa Khairupan, S.Pd</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== TANGGAL 5 AGUSTUS 2026 ==================== -->
+                <div class="tab-pane fade" id="data-rabu" role="tabpanel">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-table me-2"></i>Rekap Ketidakhadiran Siswa - Rabu, 5 Agustus 2026</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped border align-middle data-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Kelas</th>
+                                            <th>Sakit</th>
+                                            <th>Izin</th>
+                                            <th>Alpa</th>
+                                            <th>Bolos / TK</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>X.A</td><td>-</td><td>Jordan Hasan (Agama Jam 9-10), Lenita Bawole (Agama Jam 9-10)</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-B</td><td>Naura Makonah</td><td>Zaviera Lombone</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-C</td><td>Addhika Lahaja, Christy Sajow</td><td>-</td><td>-</td><td>Bolos: Fabian Tatalede (1-10), Amabel Tangkilisan (1-10), Gretsy Zifarah (1-10), Juwita Said (6-10), Pricil Israel (1-10), Zievelin Takapento (6-10), Fauzan Adam (8-10)</td></tr>
+                                        <tr><td>X-E</td><td>Nazriel Faried Buata</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-F</td><td>-</td><td>Cahaya Wulan</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-G</td><td><span class="badge bg-success">Nihil (Hadir Semua)</span></td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X.H</td><td><span class="badge bg-success">Nihil (Hadir Semua)</span></td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-I</td><td><span class="badge bg-success">Nihil (Hadir Semua)</span></td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-K</td><td>-</td><td>Marvelino Makawowor, Yoel Lombontariang</td><td>-</td><td>Bolos: Jeril Ibrahim (Jam 6-10)</td></tr>
+                                        <tr><td>XI-A1</td><td>Andrew Umboh, Leytichia Londo, Dominique Kawinda</td><td>Amel Mitusala (Paskib), Christania Sahid (Paskib), Kanaya Rampala (Paskib)</td><td>Alvaro Achmad, Muhammad Rizqianto</td><td>-</td></tr>
+                                        <tr><td>XI-A2</td><td>-</td><td>Cessar Syaputra Kumarurung, Giorgio Mabuka, Marlev Ryvlan Kenjiro Lahagu (Paskib)</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-B2</td><td>-</td><td>Armilda Anggraeini, Holyqueen Koagow, Julia Tarore, Keren Lekatompessy</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-B3</td><td>Jericho Dalope</td><td>Marsya Daniel, Chilya Agustina, Whitney Bawotong</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-C1</td><td>Callysta Mailangkay, Princess Pongoh, Raffa Fabanyo</td><td>Adinda Lerah, Albenus Bawensel, Andrea Rompas, Cloudio Antonio, Frannly Sumarauw, Leroy Maliota, Naysa Tinangon, Preisy Mewengkang, Queency Tumurang, Ridho Lintuhaseng, Syahnazwa Pilomonu (Paskib), Helena Silow (Lomba), Lyonel Sondak</td><td>Musdalifah Bakari</td><td>-</td></tr>
+                                        <tr><td>XI-C2</td><td>-</td><td>-</td><td>Aditya Prasetyo, Jerusalem Cesare Bunaen</td><td>-</td></tr>
+                                        <tr><td>XI-E</td><td>Renita S Bowontari, Siti Sahmudin</td><td>Lyonel Kuera</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XI-F2</td><td>Sarifa Ismail</td><td>Andita Timbalo (Izin Geografi 8-10), Kartika Montu, Lovely Untu, Mutiara Amasi, Nurul Husna</td><td>-</td><td>Bolos: Cintamy Benaino (6-7 Agama), Muhammad Hifni (8-10 Geografi), Muhammad Daffa (8-10 Geografi), Queen Tinahu (6-7 Agama), Syahril Marampung (8-10 Geografi), Felovely Katiho (6-7 Agama)</td></tr>
+                                        <tr><td>XII-A1</td><td>Agustinus Ambat, Ricardo Wiku</td><td>Jovi Tatanude, Nadila Sompie</td><td>Bravehard Supit</td><td>-</td></tr>
+                                        <tr><td>XII-A2</td><td>-</td><td>Andrean Sapetu (FLS3N), Ellovier Dandel (Paskib), Bayu Segara (Pramuka)</td><td>-</td><td>Bolos: Steve Rentandatu (Biologi 6-7)<br>TK: Ibrohim Sultan, Geovani Johanis</td></tr>
+                                        <tr><td>XII-B1</td><td>Eldifo Tumbio</td><td>Kevin Tinentang</td><td>Lovely Selah, Thalita Sangkop, Marvel Budiman, Afgan Bugis, Prisca Kaunang</td><td>-</td></tr>
+                                        <tr><td>XII-C1</td><td>Cherill, Nazwa</td><td>-</td><td>Naysila</td><td>-</td></tr>
+                                        <tr><td>XII-C2</td><td>Anastasia Manginsihi, Presilia Antara</td><td>Febiano Larane</td><td>-</td><td>TK: Kesya Tawas, Khairunnisa Hurudji</td></tr>
+                                        <tr><td>XII-D</td><td><span class="badge bg-secondary">Tidak Melapor</span></td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>XII-E</td><td>-</td><td>-</td><td>-</td><td>Bolos: Elcielo Manope, Excel Sumakul, Imanuel Sumolang, Julio Dalemen, Keysyah Patty, Marfandi David, Roland Araro, Stefanus Tumandung, Zainal Asfia</td></tr>
+                                        <tr><td>XII G1</td><td>Hasna Abdjul, Lhaura Lembang, Shalomitha Asmara, Elvira Lento</td><td>Margareta Kaumbur, Nayshella Lombontariang</td><td>Andini Cussoy, Gabriela Wengke</td><td>-</td></tr>
+                                        <tr><td>XII G2</td><td>Delima Anggraini, Juliet Gomies, Sara Aruperes</td><td>Abriano Baginda, Juliver Morahing</td><td>Nikita Gandaria, Prita Lakuhati</td><td>-</td></tr>
+                                        <tr><td>XII-H</td><td>Stefina Masone</td><td>-</td><td>-</td><td>TK: Gizza Manikome</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="fw-bold mb-0 text-danger"><i class="fa-solid fa-user-slash me-2"></i>Monitoring Guru Tidak Hadir - Rabu, 5 Agustus 2026</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover border align-middle data-table">
+                                    <thead class="table-secondary">
+                                        <tr>
+                                            <th>Kelas</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Nama Guru</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>X.A</td><td>B. Indonesia</td><td>Enci Fransisce Lera</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>X.A</td><td>B. Inggris</td><td>Enci Astryana Tumiwa</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>X-C</td><td>-</td><td>Mner Nocry Rindengan, S.Pd</td><td>Tidak ada keterangan, memberikan tugas</td></tr>
+                                        <tr><td>X-C</td><td>-</td><td>Enci Dra. Femmy Maramis</td><td>Tidak ada keterangan, memberikan tugas</td></tr>
+                                        <tr><td>X-E</td><td>PJOK</td><td>Charly Koloay</td><td>Tidak jadi praktek (ada kegiatan)</td></tr>
+                                        <tr><td>X-E</td><td>B. Indonesia</td><td>Femi Maramis</td><td>Tidak ada informasi & tidak memberikan tugas</td></tr>
+                                        <tr><td>X-F</td><td>PJOK</td><td>Mner Sharly Koloay, S.Pd</td><td>Ada kegiatan</td></tr>
+                                        <tr><td>X-F</td><td>Matematika</td><td>Mner Noprin Puasa, S.Pd., M.Pd., MM.</td><td>Ada kegiatan</td></tr>
+                                        <tr><td>X-F</td><td>B. Indonesia</td><td>Yunita Aronde, S.Pd</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>X.H</td><td>B. Indonesia</td><td>Yunita Aronde, S.Pd</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>X-I</td><td>-</td><td>Nci Yunita Aronde, S.Pd</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XI-A1</td><td>Matematika TL</td><td>Nci Christy Bogia</td><td>Rapat guru di lab</td></tr>
+                                        <tr><td>XI-A1</td><td>Kimia</td><td>Nci Sriastuty Asjhadi</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XI-A2</td><td>Matematika Wajib</td><td>Mner Simon Tegel</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XI-B2</td><td>Sastra Indonesia</td><td>Enci Martiwi Mokodongan</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XI-B2</td><td>Kimia</td><td>Enci Sriastuty Asjhadi</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XI-B2</td><td>Informatika</td><td>Enci Dorothea Lumanaw</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XI-B3</td><td>Matematika</td><td>Noprin San Puasa, S.Pd., M.Pd., MM.</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XI-C2</td><td>PJOK</td><td>Charly Charles Johnry Koloay, S.Pd (Jam 3-4)</td><td>Diberikan tugas</td></tr>
+                                        <tr><td>XI-C2</td><td>Ekonomi</td><td>Vanti Novita Kailas, S.Pd (Jam 8-10)</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XI-E</td><td>Matematika TL</td><td>Enci Christy Bogia</td><td>Ada info & diberikan tugas</td></tr>
+                                        <tr><td>XI-E</td><td>B. Indonesia</td><td>Enci Dik Budiman</td><td>Ada info & diberikan tugas</td></tr>
+                                        <tr><td>XII-A1</td><td>Informatika</td><td>Nci Filia Bawole</td><td>Kegiatan di lab</td></tr>
+                                        <tr><td>XII-A1</td><td>Sejarah TL</td><td>Nci Ryaa Candra</td><td>Tidak masuk, memberikan tugas</td></tr>
+                                        <tr><td>XII-A2</td><td>B. Inggris</td><td>Amanda Marlina Patras (Jam 8-10)</td><td>Ada kesibukan, memberikan tugas</td></tr>
+                                        <tr><td>XII-B1</td><td>Seni Budaya</td><td>Mner Weldy</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XII-B1</td><td>Fisika</td><td>Mner Fredy Takalamingan</td><td>Tugas luar (Lab Komputer & Cabdin)</td></tr>
+                                        <tr><td>XII-C1</td><td>Matematika</td><td>Fritz Embongbulan, S.Pd</td><td>Kegiatan guru-guru Matematika</td></tr>
+                                        <tr><td>XII-C2</td><td>Geografi</td><td>Nci Anggraini Puspitasari</td><td>Mendampingi FLS3N & memberikan tugas</td></tr>
+                                        <tr><td>XII-E</td><td>Ekonomi</td><td>Nci Vanti Novita Kailas, S.Pd</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XII-E</td><td>B. Inggris</td><td>Ms. Chairunnisa Kairupan, S.Pd</td><td>Tidak ada keterangan</td></tr>
+                                        <tr><td>XII G1</td><td>B. Indonesia</td><td>Nci Dich Budiman</td><td>Tidak ada informasi, memberi tugas</td></tr>
+                                        <tr><td>XII G1</td><td>Ekonomi</td><td>Nci Fanda Kambey</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII G1</td><td>Seni Budaya</td><td>Mner Alui Lombu</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII G2</td><td>Ekonomi</td><td>Enci Fanda Kambey (Jam 3-5)</td><td>Tidak ada informasi ketidakhadiran</td></tr>
+                                        <tr><td>XII G2</td><td>Seni Budaya</td><td>Mner Chrisman Lombu (Jam 6-7)</td><td>Izin ada kegiatan</td></tr>
+                                        <tr><td>XII G2</td><td>B. Indo TL</td><td>Enci Afke Sawel (Jam 8-10)</td><td>Tidak masuk, memberikan tugas</td></tr>
+                                        <tr><td>XII-H</td><td>B. Inggris Wajib</td><td>Anti Ahualambung, S.Pd</td><td>Tidak ada info & tidak memberikan tugas</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- END TAB CONTENT -->
+
+            <!-- 8. ANALISIS AKADEMIK RINGKAS -->
+            <div class="row g-3 mb-4 section-target" id="sec-analisis">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm p-3">
+                        <h6 class="fw-bold text-success mb-3"><i class="fa-solid fa-trophy me-2"></i>Kelas Kehadiran Terbaik (Paling Sedikit Ketidakhadiran)</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-middle">
+                                <span><strong>1. Kelas X-G</strong> (Konstisten Nihil / Hadir Semua)</span>
+                                <span class="badge bg-success">Sempurna</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-middle">
+                                <span><strong>2. Kelas X-K</strong> (Tinggi Tingkat Kehadiran)</span>
+                                <span class="badge bg-success">Sangat Baik</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-middle">
+                                <span><strong>3. Kelas X.H</strong> (Tinggi Tingkat Kehadiran)</span>
+                                <span class="badge bg-success">Sangat Baik</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm p-3">
+                        <h6 class="fw-bold text-danger mb-3"><i class="fa-solid fa-triangle-exclamation me-2"></i>Kelas Perlu Perhatian Khusus (Alpha & Bolos Tinggi)</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-middle">
+                                <span><strong>1. Kelas XII-E</strong> (Tinggi Tingkat Bolos Berkelompok)</span>
+                                <span class="badge bg-danger">Atensi Tinggi</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-middle">
+                                <span><strong>2. Kelas X-C</strong> (Tinggi Tingkat Bolos Jam Pelajaran)</span>
+                                <span class="badge bg-danger">Atensi Tinggi</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-middle">
+                                <span><strong>3. Kelas XII-C1 & XII-D</strong> (Alpha Berturut-turut)</span>
+                                <span class="badge bg-warning text-dark">Perlu Pembinaan</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. LAPORAN & EKSPOR -->
+            <div class="card border-0 shadow-sm p-4 mb-4 section-target" id="sec-laporan">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-1"><i class="fa-solid fa-file-pdf me-2 text-danger"></i>Cetak & Ekspor Laporan Rekapan</h5>
+                        <p class="text-muted mb-0 small">Unduh laporan dalam format resmi untuk arsip kurikulum atau rapat evaluasi bulanan.</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-danger" onclick="window.print()"><i class="fa-solid fa-print me-2"></i>Cetak PDF</button>
+                        <button class="btn btn-success" onclick="alert('Fitur Ekspor Excel Siap Diintegrasikan!')"><i class="fa-solid fa-file-excel me-2"></i>Ekspor Excel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. FOOTER -->
+            <footer class="text-center">
+                <p class="mb-1 fw-bold">Dashboard Kurikulum SMA Negeri 2 Bitung</p>
+                <p class="mb-1 small">Dikembangkan untuk mendukung pengelolaan kurikulum berbasis data real-time.</p>
+                <small>Pengelola: <strong>Fredynandus Takalamingan, S.Si</strong> (Wakil Kepala Sekolah Bidang Kurikulum) &copy; 2026 SMAN 2 Bitung</small>
+            </footer>
+
+        </div> <!-- END CONTENT -->
+    </div> <!-- END WRAPPER -->
+
+    <!-- JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Smooth Scroll Navigation Function Fix
+        function scrollToElement(targetId, element) {
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            // Active State Switching
+            document.querySelectorAll('.nav-item-btn').forEach(item => item.classList.remove('active'));
+            if (element) {
+                element.parentElement.classList.add('active');
+            }
         }
 
-        // ANIMASI COUNTER STATISTIK
-        function startCounters() {
-            const counters = document.querySelectorAll('.counter');
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const suffix = counter.getAttribute('data-suffix') || '';
-                let current = 0;
-                const increment = Math.ceil(target / 40) || 1;
-                const updateCounter = () => {
-                    current += increment;
-                    if (current < target) {
-                        counter.innerText = current + suffix;
-                        setTimeout(updateCounter, 35);
-                    } else {
-                        counter.innerText = target + suffix;
-                    }
-                };
-                updateCounter();
-            });
+        // Data Rekapan Statistik Harian
+        const dailySummaryData = {
+            senin: { hadir: 915, sakit: 52, izin: 42, alpa: 28, bolos: 3, guru: 24 },
+            selasa: { hadir: 902, sakit: 38, izin: 43, alpa: 29, bolos: 15, guru: 25 },
+            rabu: { hadir: 888, sakit: 23, izin: 38, alpa: 17, bolos: 28, guru: 37 }
+        };
+
+        // Switch Halaman Landing ke Dashboard
+        function enterDashboard() {
+            document.getElementById('landingPage').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('landingPage').style.display = 'none';
+            }, 500);
         }
 
-        // ISI DROPDOWN KELAS SECARA OTOMATIS DARI DATA TABEL
-        function populateKelasDropdown() {
-            const rows = document.querySelectorAll('#kbmTable tbody tr');
-            const kelaset = new Set();
-            rows.forEach(row => {
-                const k = row.getAttribute('data-kelas');
-                if (k) kelaset.add(k);
-            });
-            const select = document.getElementById('filterKelasSelect');
-            Array.from(kelaset).sort().forEach(k => {
-                const opt = document.createElement('option');
-                opt.value = k;
-                opt.textContent = k;
-                select.appendChild(opt);
-            });
+        // Real-time Jam Digital
+        function updateClock() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').innerText = now.toLocaleDateString('id-ID', options);
+            document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID') + ' WITA';
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Update Kartu Ringkasan
+        function updateSummary(day) {
+            const data = dailySummaryData[day];
+            document.getElementById('statHadir').innerText = data.hadir;
+            document.getElementById('statSakit').innerText = data.sakit;
+            document.getElementById('statIzin').innerText = data.izin;
+            document.getElementById('statAlpa').innerText = data.alpa;
+            document.getElementById('statBolos').innerText = data.bolos;
+            document.getElementById('statGuru').innerText = data.guru;
+            updateCharts(data);
         }
 
-        // FILTER TABEL KBM
-        function filterKbmTable() {
-            const hariVal = document.getElementById('filterHari').value;
-            const kelasVal = document.getElementById('filterKelasSelect').value;
-            const rows = document.querySelectorAll('#kbmTable tbody tr');
-
-            rows.forEach(row => {
-                const rowHari = row.getAttribute('data-hari');
-                const rowKelas = row.getAttribute('data-kelas');
-
-                let hariMatch = (hariVal === 'all' || rowHari === hariVal);
-                let kelasMatch = (kelasVal === 'all' || rowKelas === kelasVal);
-
-                if (hariMatch && kelasMatch) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
+        // Initialize DataTables
+        $(document.getElementById('content')).ready(function() {
+            $('.data-table').DataTable({
+                "pageLength": 8,
+                "language": {
+                    "search": "Cari data:",
+                    "lengthMenu": "Tampilkan _MENU_ entri",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data"
                 }
             });
-        }
+        });
 
-        // FILTER TABEL GURU
-        function filterGuruTable() {
-            const input = document.getElementById('searchGuruInput').value.toUpperCase();
-            const rows = document.querySelectorAll('#guruAbsentTable tbody tr');
+        // Initialize Chart.js
+        let attendanceChart, pieChart;
 
-            rows.forEach(row => {
-                const text = row.innerText.toUpperCase();
-                row.style.display = text.includes(input) ? '' : 'none';
+        function initCharts() {
+            const ctx1 = document.getElementById('attendanceChart').getContext('2d');
+            attendanceChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Senin (3 Ags)', 'Selasa (4 Ags)', 'Rabu (5 Ags)'],
+                    datasets: [
+                        { label: 'Sakit', data: [52, 38, 23], backgroundColor: '#ffc107' },
+                        { label: 'Izin', data: [42, 43, 38], backgroundColor: '#0dcaf0' },
+                        { label: 'Alpa', data: [28, 29, 17], backgroundColor: '#dc3545' },
+                        { label: 'Bolos/TK', data: [3, 15, 28], backgroundColor: '#6c757d' }
+                    ]
+                },
+                options: { responsive: true, scales: { x: { stacked: true }, y: { stacked: true } } }
+            });
+
+            const ctx2 = document.getElementById('pieChart').getContext('2d');
+            pieChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Sakit', 'Izin', 'Alpa', 'Bolos/TK'],
+                    datasets: [{
+                        data: [52, 42, 28, 3],
+                        backgroundColor: ['#ffc107', '#0dcaf0', '#dc3545', '#6c757d']
+                    }]
+                },
+                options: { responsive: true }
             });
         }
+
+        function updateCharts(data) {
+            if (pieChart) {
+                pieChart.data.datasets[0].data = [data.sakit, data.izin, data.alpa, data.bolos];
+                pieChart.update();
+            }
+        }
+
+        window.onload = function() {
+            initCharts();
+            updateSummary('senin');
+        };
     </script>
 </body>
 </html>

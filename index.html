@@ -222,6 +222,9 @@
                     <a onclick="scrollToElement('sec-kehadiran-siswa', this)"><i class="fa-solid fa-calendar-day"></i> Kehadiran Siswa (Harian)</a>
                 </li>
                 <li class="nav-item-btn">
+                    <a onclick="scrollToElement('sec-jalan-sehat', this)"><i class="fa-solid fa-person-walking text-success"></i> Jalan Sehat (6 Ags)</a>
+                </li>
+                <li class="nav-item-btn">
                     <a onclick="scrollToElement('sec-rekap-siswa-total', this)"><i class="fa-solid fa-user-graduate text-warning"></i> Rekapan Siswa (Total)</a>
                 </li>
                 <li class="nav-item-btn">
@@ -333,17 +336,27 @@
                     <ul class="nav nav-pills nav-fill" id="dateTabs" role="tablist">
                         <li class="nav-item">
                             <button class="nav-link active fw-bold" id="tab-senin" data-bs-toggle="tab" data-bs-target="#data-senin" type="button">
-                                <i class="fa-solid fa-calendar-day me-2"></i> Senin, 3 Agustus 2026
+                                <i class="fa-solid fa-calendar-day me-2"></i> Senin, 3 Ags 2026
                             </button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link fw-bold" id="tab-selasa" data-bs-toggle="tab" data-bs-target="#data-selasa" type="button">
-                                <i class="fa-solid fa-calendar-day me-2"></i> Selasa, 4 Agustus 2026
+                                <i class="fa-solid fa-calendar-day me-2"></i> Selasa, 4 Ags 2026
                             </button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link fw-bold" id="tab-rabu" data-bs-toggle="tab" data-bs-target="#data-rabu" type="button">
-                                <i class="fa-solid fa-calendar-day me-2"></i> Rabu, 5 Agustus 2026
+                                <i class="fa-solid fa-calendar-day me-2"></i> Rabu, 5 Ags 2026
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold" id="tab-kamis" data-bs-toggle="tab" data-bs-target="#data-kamis" type="button">
+                                <i class="fa-solid fa-calendar-day me-2"></i> Kamis, 6 Ags 2026
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold" id="tab-jumat" data-bs-toggle="tab" data-bs-target="#data-jumat" type="button">
+                                <i class="fa-solid fa-calendar-day me-2"></i> Jumat, 7 Ags 2026
                             </button>
                         </li>
                     </ul>
@@ -510,6 +523,235 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- TANGGAL 6 AGUSTUS 2026 -->
+                <div class="tab-pane fade" id="data-kamis" role="tabpanel">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white py-3">
+                            <h6 class="fw-bold mb-0"><i class="fa-solid fa-users me-2"></i>Ketidakhadiran Siswa - Kamis, 6 Agustus 2026</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped border align-middle data-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Kelas</th>
+                                            <th>Sakit</th>
+                                            <th>Izin</th>
+                                            <th>Alpa</th>
+                                            <th>Bolos / TK / Tanpa Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>X.A</td><td>-</td><td>Abigail Tumbel, Lenita Bawole, Hattisa Onsobijono, Syarif Syahrul</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-C</td><td>- (Hadir Semua: 36 Siswa)</td><td>-</td><td>-</td><td>-</td></tr>
+                                        <tr><td>X-G</td><td>Quenshe Sambil, Gabriela Karaeng, William Tagoli, Rajullah Makmur</td><td>-</td><td>Gabriel Mohede, Metthew Laowrensh, Fabiano Manda</td><td>-</td></tr>
+                                        <tr><td>XI-A2</td><td>-</td><td>Anna (Jaga Nenek RS), Cessar (Paskib), Giorgio (Paskib), Marlev (Paskib)</td><td>Gabriel, Rhee</td><td>-</td></tr>
+                                        <tr><td>XI-C2</td><td>Meilinzzy Marriah Mantiri</td><td>-</td><td>Alvino J’lou Kasenda, Jerusalem Cesare Bunaen</td><td>-</td></tr>
+                                        <tr><td>XII-A1</td><td>Milandry Pamondolan, Ricardo Wiku</td><td>Nathanael Salenda</td><td>Agustinus Ambat, Jeanet Talumesang</td><td>-</td></tr>
+                                        <tr><td>XII-B1</td><td>-</td><td>Fahri Gobel, Gizela Musak, Aliyah Sanros, Crislin Ndobe</td><td>-</td><td>Marvel Budiman, Thalita Sangkop, Juniar Taib, Assyahira Umaiyya, Cheysi Rauf (TK)</td></tr>
+                                        <tr><td>XII D</td><td>Morinda Kansil, Glory Pangalo, Yebrian Bawotong</td><td>-</td><td>-</td><td>-</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TANGGAL 7 AGUSTUS 2026 (REKAPAN JUMAT) -->
+                <div class="tab-pane fade" id="data-jumat" role="tabpanel">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="fw-bold mb-0"><i class="fa-solid fa-users me-2"></i>Ketidakhadiran Siswa - Jumat, 7 Agustus 2026</h6>
+                            <span class="badge bg-light text-primary fw-bold">Update Realtime</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped border align-middle data-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Kelas</th>
+                                            <th>Sakit</th>
+                                            <th>Izin / Paskibraka</th>
+                                            <th>Alpa</th>
+                                            <th>Keterangan Kehadiran</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>X-E</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 30 Siswa</span></td></tr>
+                                        <tr><td>X-G</td><td>Rajullah Makmur</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 35 Siswa</span></td></tr>
+                                        <tr><td>X-K</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 33 Siswa</span></td></tr>
+                                        <tr><td>XI-A2</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 28 Siswa</span></td></tr>
+                                        <tr><td>XI-B2</td><td>Mawar Pateda</td><td>Julia Tarore (Paskib), Keren Lekatompessy (Paskib), Armilda Anggraeni (Paskib)</td><td>-</td><td><span class="badge bg-success">Hadir: 34 Siswa</span> (Total Tidak Hadir: 4)</td></tr>
+                                        <tr><td>XI B3</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 31 Siswa</span></td></tr>
+                                        <tr><td>XI-F2</td><td>Queen Taguli, Nalita Nilahi</td><td>Kartika Montu</td><td>Jibert Mangetik, Muhammad Hifni</td><td>-</td></tr>
+                                        <tr><td>XII-A2</td><td>Juliana, Novena Rahajaan, Naila Rahman</td><td>Miranda Baruadi</td><td>-</td><td><span class="badge bg-success">Hadir: 35 Siswa</span> (Total Siswa: 39)</td></tr>
+                                        <tr><td>XII-B1</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 27 Siswa</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MENU BARU: JALAN SEHAT SISWA (KAMIS, 6 AGUSTUS 2026) -->
+            <div id="sec-jalan-sehat" class="card border-0 shadow-sm mb-5 section-target">
+                <div class="card-header bg-success text-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0"><i class="fa-solid fa-person-walking me-2"></i>Laporan Peserta Jalan Sehat Siswa - Kamis, 6 Agustus 2026</h5>
+                    <span class="badge bg-warning text-dark fw-bold"><i class="fa-solid fa-flag-checkered me-1"></i>Kegiatan Khusus Sekolah</span>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
+                        <i class="fa-solid fa-circle-info fa-2x me-3"></i>
+                        <div>
+                            <strong>Rekapan Kegiatan Jalan Sehat:</strong> Berikut adalah daftar siswa per kelas dan panitia OSIS yang berpartisipasi dalam kegiatan Jalan Sehat SMAN 2 Bitung pada hari Kamis, 6 Agustus 2026.
+                        </div>
+                    </div>
+
+                    <!-- PANITIA OSIS -->
+                    <div class="p-3 mb-4 bg-light rounded-3 border border-success">
+                        <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-users-gear me-2"></i>Panitia Jalan Sehat (OSIS)</h6>
+                        <span class="badge bg-success me-1 mb-1">Sunshine Gioh</span>
+                        <span class="badge bg-success me-1 mb-1">Helena Berikang</span>
+                        <span class="badge bg-success me-1 mb-1">Princess Pongoh (XI-C1)</span>
+                        <span class="badge bg-success me-1 mb-1">Viceldino Pialandang (XI-C1)</span>
+                        <span class="badge bg-success me-1 mb-1">Frilia Kambira (XI-C1)</span>
+                        <span class="badge bg-success me-1 mb-1">Tsarwah Ohihia (XI-C1)</span>
+                        <span class="badge bg-success me-1 mb-1">Fellycya Tengker (XI-A1)</span>
+                        <span class="badge bg-success me-1 mb-1">Reiza Bulotio (XI-A1)</span>
+                        <span class="badge bg-success me-1 mb-1">Gayla (XI-A1)</span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered align-middle data-table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Kelas</th>
+                                    <th class="text-center">Jumlah Peserta</th>
+                                    <th>Daftar Nama Siswa Ikut Jalan Sehat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold text-success">X-A</td>
+                                    <td class="text-center fw-bold">32</td>
+                                    <td><small>Abdul Razaq, Abdul Antuke, Abel Bungkaes, Adelia Pramesti, Adrian Passa, Amira Najla, Angie Honis, Aprilia Monoarfa, Bintang Graha, Cherry Hendrik, Daniel Wulur, Darel saleletang, Evelyn Bungkaes, Fadil Ishak, Faiz Ahnaf, Fatiah Ladudi, Febrina Derek, Francysco Sahari, Giovanni Hamel, Inggried Radjabaikole, Jordan Hasan, Joseph Tiow, Kirey Alung, Fahri Alkatiri, Nathanael Lano, Nazwa Suga, Noel Mananeke, Nuril Rahmat, Praise Waloni, Queenzly Sangi, Revandro Bander, Wisye Burungmanis</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">X-B</td>
+                                    <td class="text-center fw-bold">27</td>
+                                    <td><small>Alexander Rumampuk, Joodse Medea, Alfarizi Israel, Christania Christofel, Laura Santoso, Kirana Hamzah, Esra Caesar Kiangkung, Garlen Ryuichi Santoso, Fayvi Lahinda, Jayden Manope, Fatisya Abdullah, Aditya Ramadhan, Farham Manoppo, Dellon Salindeho, Shanas Yusup, Audit Masipuang, Keyla Metusala, Aditya Dhava Manikome, Preysi Londo, Dumaria Warouw, Juliana Selamat, Cinta Darise, Quensi Sundana, Noval Dusauw, Agrily Andries, Gracelyn Amelya Lambe, Muhammad Imam Satari</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">X-E</td>
+                                    <td class="text-center fw-bold">27</td>
+                                    <td><small>Lianna Andries, Az Zahra Paula Abdul, Qeyla Saskia Asti Somba, Atiya Ramadhani, Gabrielany Clara Lole, Kayla Tabitha Metusala, Asri Tri Syafa Tumbol, Shakira Aira Putri, Avrylianty Adhista Laima, Marsela Cretia Anggraini Mananohas, Denova Aimissu Putri Santiarsa, Mawar Sharon Twain Pangemanan, Solagracia Fifteen January Turere, Regina Febrianti Kakalang, Marsya Elgratia Melale, Evelinda Princes Zefanya Rompas, Jumria Maulina Pratiwi Hadju, Tiara Rahmawaty, Hezzel Hasthiono, Febrian Palandi, Muhammad Latif Abikarim, Rifaldo Mikhael Sadrak, Gibran Risky Sasela, Kenzi Arunde, Victor Salindeho, Arda R. Lumuhu, Putra A. Sultan</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">X-F</td>
+                                    <td class="text-center fw-bold">32</td>
+                                    <td><small>Aljibran Mamuntu, Almira Callysta, Azka Langkau, Brilliant Gabriel, Caesar Efrata, Cahaya Annisa, Cahaya Putri, Chriselia Syalomita, Elvira Natalia, Fernando Peter, Fillino Grazio, Fransisco Keyva, Gabrillia Saruwaba, Halid Lionel, Injilita Melanie, Ivel Julio, Kingsly Palakua, Maqfirah Alisyah, Mariska Oroh, Maylin Christi, Melody Patricia, Nabeela Yudhistira, Naufal Supit, Queen Derek, Qyanu Tumandung, Ray Samangka, Russel Rapar, Sephiandra Lapaehe, Syava Meilani, Trevo Sahetappy, Tri Meida Wulansari, Vincent Iniesta</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">X-H</td>
+                                    <td class="text-center fw-bold">30</td>
+                                    <td><small>Nairul Anugrah, Ganesha Rengga, Glory Pondaag, Gabriel Wuntuan, Michaela Araro, Dameria Dalentang, Devirha Amu, Maksmiliano Anggoman, Revalina Rambitan, Feliana Thomas, Zahra Sutarso, Diego Kantur, Stifo Kelejan, Yehezkiel Manginsihi, Dimarzio Bawili, Jeniffer Hormati, Putri Makal, Gledys Amara, Cahaya Patras, Fahri Sultan, Christian Sumendap, Naila Djafar, Asmara Umar, Clarissa Rawung, Christian Amala, Mikhael Mandagi, Reyhan Bilondatu, Gracia Padang, Sydney Bawotong, Arini Bawangu</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">X-I</td>
+                                    <td class="text-center fw-bold">36</td>
+                                    <td><small>Aurel Mathias, Azrel Dailani, Cantika Ladawing, Christian Antoni, Danil Rotty, Desiliya Dedene, Dinda Marthin, Farhan Harmain, Filia Paruntu, Florence Sagai, Gracia Igir, Gracia Putri, Heru Lesmana, Hizkia Maringka, Immanuel Budiman, Jasmala Ali, Julia Simatupang, Julian Mantho, Julio Sahambangun, Kimiko Scholastika, Kresentia Sutrisno, Marcello Tumei, Michaela Sembiring, Mikhaella Bangheli, Militio Warow, Nasta Agus, Rafael Tuminomor, Razwa Satjawidjaja, Rismiyanti Jamal, Rosela Mayore, Syavid Saputra, Theovillya Mashuri, Trivena Lumempouw, Vilian Makatika, Yeremia Endey, Zevar Landri</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">X-K</td>
+                                    <td class="text-center fw-bold">31</td>
+                                    <td><small>Nayla Alweni, Vaellary Bawalang, Vhelove Rantung, Betsya Berkipas, Jenifer Rompis, Zafitri Mahmud, Fharadila Sukri, Devira Maramung, Cleverly B.M. Titahena, Jilly I. Takainginang, Kayla Silangen, Jeril Ibrahim, Disya Kuilim, Deovan Kabuhung, Ananda R. Dapat, Prissa A.W. Mopangga, Ginansyah P.D. Kuera, Steven Sida, Aurora Posumah, Shifanya Manginsihi, Erin Lomboan, Fatar Djafar, Dzaky Ash Zainuddin, Rian Leko, Tjia Makadada, Marvel Makawowor, Naftalia F. Wauda, Jaeden Oktaviano, Yoel Lombontariang, Jhonathan Kakomba, Casey Pilar</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-A1</td>
+                                    <td class="text-center fw-bold">28</td>
+                                    <td><small>Christian Kalundas, Putra Saraminang, Vrendly Rantung, Alvaro Achmad, Lionel Paraeng, Yosua Manoppo, Muh Fahri Hamka, Leonel Canzely Noya, Marco Maramis, Haris Ahmad Firdaus, Alva Sagune, Cheren Muntu, Deril Gain Turungku, Gabriel Pongoh, Yeskri Gio Sito, Adhit Runtu (PMR), Louis Wilar, Marsyanti Surualing, Joael Dandels, Nurul Inayah, Gilliano Katelang, Fadil Paris, Rebbeca Puasa, Syiefa Mananentung, Jericho Pontoh, Fellycya Tengker (OSIS), Reiza Bulotio (OSIS), Gayla (OSIS)</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-A2</td>
+                                    <td class="text-center fw-bold">30</td>
+                                    <td><small>Adimas, Yoel, Andrila, Yeheskiel, Calvin, Wilsher, Cleizy, David, Dian, Edrick, Fadhila, Godwin, Velovely, Gloria, Junether, Kaffah, Lionel, Manoel, Micella, Syahir, Retno, Rhassya, Rizky, Narwa, Noel, Praygift, Rafael, Rafael Lasut, Yusniar, Januario</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-B2</td>
+                                    <td class="text-center fw-bold">27</td>
+                                    <td><small>Blessing, Metyu, Alif, Jouquin, Januar, Milithia, Rini, Dina, Regina, Gisel, Zairah, Nadila, Azzahra, Aleesya, Twinkle, Shalima, Keyzia, Salsabila, Maghfirah, Jili, Kemal, Fael, Cia, Tesa, Fabio, Samuel, Jonatan</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-B3</td>
+                                    <td class="text-center fw-bold">22</td>
+                                    <td><small>Ardhiansyah Usman, Ginsalo Rapan, Jericho Dalope, Jeremia Pangurelu, Rafi Baharudin, Ekklesia Somba, Theresia Corneles, Khaira Nadhifa Durumias, Ks, Kerin Banduge, Dhafira Khinar, Jacqueline Victoria Tundundatu, Mark Israel, Rasya Fadil, Micael Masihoru, Nur Naila Faiza Chandra, Sheryl Sandiata, Alifa Tamara, Nurdina Djafar, Kaila Markus, Hany Yudhoyono, Marsya Daniel</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-C1</td>
+                                    <td class="text-center fw-bold">17</td>
+                                    <td><small>Lovely Elungan, Kayla Palar, Ghibriel Holderman, Rendy Barahama, Gerard Tuwing, Defanty Aurelia, Agnes Wowiling, Faradilla Tairas, Galatia Linggar, Michelle Manaroinsong, Abigail Suawa, Helena Silow, Megan Palenewen, Gisella Pratasik, Alvino Ibrahim, Jihan Rahman, Raffa Fabanyo</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-C2</td>
+                                    <td class="text-center fw-bold">35</td>
+                                    <td><small>Fara Putri Dau, Najmi Tahir, Given Ombeng, M Dzakwa Wijaya, Caterine Runtuwene, Syafrial Pratama, Livi Kaangkung, Putri Andries, Makmur Aditya Gia, Nazriel Ilham Hamzah, Vhayla Pugesehang, San San Kho, Putri Dwi Safitri, Queen Moreyne Djikoan, Princes Grace Manaru, Gainer Rahasia, Ridho Apriansyah Asraf Masalla, Jeni Elvita Manoy, Alezra Adipati, Nur’ain Ilahude, Evangelia Lubiano, Miftha Faradilla, Aditiya Prasetyo, Ahmad Z Putra, Gerald Fong Purnomo, Gisella Makalihing, Finsa Rauf, Leonal Bilindade, Tesalonika Salindeho, Zivilla Lombo, Imanuel Walone, Risky Muchtar, Gadisya Amba, Evand Kapahese, Luis Basembun</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-E</td>
+                                    <td class="text-center fw-bold">26</td>
+                                    <td><small>Tiara Lukas, Kartini Apriliaa, Salwa Sudirman, Salwa Tahir, Syikri Aimbu, Dewi Terok, Keysa Hamzah, Achmad Mustofa, Fauzan Laraga, Reza Nugraha, Sarfin Tahili, Rafa Djama, Nazril Tahir, Bintang Ridwan, Sukma Koniyo, Lyonel Kuera, Jeremi Bastian, Putri Hujuala, Kasih Hamzah, Seroun Kaurouw, Lefrina Sabaru, Davin Alfiano, Asmiranda Aulia Hasan, Richail Chalik Kansil, Euginia Sherily Lahinda, Renita Shesillia Bowontari</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-F1</td>
+                                    <td class="text-center fw-bold">21</td>
+                                    <td><small>Rezaldi Rauf, Feronica Kireina Aling, Rifki Rama, Queenbee Kareho, Julistia Yudas, Inka Sadedo, Charisya Ruppu, Fani Hasan, Natzwa Abdul Rafi, Marcelin Tamaroba, Christania Sinadia, Grachia Sumalenda, Jelita Lamadju, Aiman, Musdalifa M. Yusuf, Moh Akzar Datau, Aqilla Sahquita Darise, Khrisna Hontong, Nadia Lumi, Clive, Chelsy Sherina Senna Mambu</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XI-F2</td>
+                                    <td class="text-center fw-bold">24</td>
+                                    <td><small>Fadila Ranti, Queen Taguli, Fitriani Bawia, Cintamy Benaino, Frisilia Lahinda, Dita Pratiwi, Nalita Nilahi, Quenly Tinahu, Aylin Nanangkong, Raudlah Yunus, Yesaya Lantang, Rezky Lahimade, Achmad Rivaldy Muchtar, Sarifa Asya Ismail, Mutiara Amasi, Felovely Katiho, Erin Kasaluhe, Nayla Ngantung, Graciela Sumenda, Delon Angkumona, Stevanovich Lenserang, Lovely Untu, Griseldis Simpaen, Miracle Makausi</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XII-A2</td>
+                                    <td class="text-center fw-bold">25</td>
+                                    <td><small>Naila Rahman, Gita Hamid, Miranda Putri Baruadi, Delaya Miyuki Kambong, Natasya Thomas, Amalia Salsabila, Marchela Hingide, Queen Dapahari, Elisabet Gahauna, Juliana, Bayu Segara, Jordan Awondatu, Priscilla Rumeser, Chelin Tambaru, Haykel Anie, Rivan Pasulle, Novena Rahajaan, Hanggio Lamusu, Apriliyani Amiri, Geovani Johanis, Yuan Lukas, Muh. Fadhil Ainur Ridho, Muhammad Rizal, Joshua Sidangoli, Elovier Dandel</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XII-C1</td>
+                                    <td class="text-center fw-bold">24</td>
+                                    <td><small>Gwyneth, Queensy, Frelita, Firstly, Kirey, Faria, Naysila, Khairin, Yizreel, Beatris, Destinia, Queen, Gloria, Relis, Reinhard, Fahri, Priskila, Stif, Prinsess, Farsela, Mariska, Windira, Paschal, Rut</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XII-D</td>
+                                    <td class="text-center fw-bold">33</td>
+                                    <td><small>Aliya Hau, Arya Bahri, Axel Lumempouw, Benedict Thomas, Boas Sitorus, Choirunnisa Nurcholis, Clerens Pateh, Daniel Nathoni, Devid Awali, Estefano Ambar, Gilyo Lahema, Gisela Mokodompis, Hafish Mangkona, Jesen Rorong, Jonathan Mahalubi, Jonathan Toli, Jordan Lolaroh, Joval Bansaleng, Junior Kiaking, Keyzia Makawekes, Masfari, Michael Effendy, Michiko Giroth, Muhammad Pamuli, Muhammad Kana, Muhammad Ramadhani, Muhammad Maulana, Naswa Kiraman, Nikita Risdianto, Putri Diko, Richard Lengkey, Sarah Bawinto, Xandria Santoso</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XII-F</td>
+                                    <td class="text-center fw-bold">15</td>
+                                    <td><small>Andra Moktar, Anthonio Timbangnusa, Devi Sawal, Dhilgio Sompotan, Florianette Dalending, Ghiofano Poluakan, Jhonatan Tahulending, Kanzani Amiman, Muhammad Yahya Taha, Muhammad Fahri Dalle, Muhammad Fadil Aprilio, Muhammad Fahri Kobandaha, Raihan Bahsoan, Princ Aghogho, Rizki Lasimpala</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XII-G1</td>
+                                    <td class="text-center fw-bold">23</td>
+                                    <td><small>Adriasa Sukarame, Aira Hutama, Andini Cussoy, Anugrah Ramadhan, Castino Kasehung, Christa Kaumbur, Elvira Lento, Gilby Suot, Giovani Bilindade, Hasna Abdjul, Julita Lensehe, Lhaura Lembang, Meisilin Setia, Muhammad Magau, Muhammad Yandji, Nayla Aprilia, Nayshella Lombontariang, Nikita Gantare, Priskila Sake, Randy Muhaling, Riska Legrans, Shalomitha Asmara, Suci Abdurahman</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XII-G2</td>
+                                    <td class="text-center fw-bold">32</td>
+                                    <td><small>Lindsay, Nava, Novita, Reykhana, Gevia, Elisabeth, Naila, Ratu, Juliet, Delima, Ailychya, Prita, Keyla, Cleo, Reyhan, Fatir, Genard, Chris, Julifer, Zainal, Wahyu, Joshua, Lutfi, Sara, Nachika, Nikita, Faujia, Yosia, Alif, Deden, Fahry, Arif</small></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">XII-H</td>
+                                    <td class="text-center fw-bold">19</td>
+                                    <td><small>Monica Pasandaran, Joshua Selamat, Mirachel Paduli, Muhammad Sofyan, Ovelia Andris, Petra Dalaijan, Muhammad Afirullah, Dewi, Eureka, Atria, Sarah, Danas, Imanuel, Syalom Lepa, Tamara Mararoating, Tirsa, Marckfil, Iman, Marcella</small></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- FITUR 1: REKAPAN SISWA (TOTAL FREKUENSI ABSEN S/I/A/B) -->
@@ -605,7 +847,7 @@
             <!-- MONITORING GURU HARIAN -->
             <div id="sec-kehadiran-guru" class="card border-0 shadow-sm mb-5 section-target">
                 <div class="card-header bg-dark text-white py-3">
-                    <h5 class="fw-bold mb-0"><i class="fa-solid fa-chalkboard-user me-2"></i>Monitoring Log Guru Tidak Hadir (3 - 5 Agustus 2026)</h5>
+                    <h5 class="fw-bold mb-0"><i class="fa-solid fa-chalkboard-user me-2"></i>Monitoring Log Guru Tidak Hadir (3 - 6 Agustus 2026)</h5>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -656,6 +898,11 @@
                                 <tr><td>5 Ags 2026</td><td>XII-C2</td><td>Geografi</td><td>Nci Anggraini Puspitasari</td><td>Mendampingi FLS3N & memberikan tugas</td></tr>
                                 <tr><td>5 Ags 2026</td><td>XII-E</td><td>Ekonomi</td><td>Nci Vanti Novita Kailas, S.Pd</td><td>Tidak ada keterangan</td></tr>
                                 <tr><td>5 Ags 2026</td><td>XII-H</td><td>B. Inggris Wajib</td><td>Anti Ahualambung, S.Pd</td><td>Tidak ada informasi & tidak memberikan tugas</td></tr>
+
+                                <!-- Kamis, 6 Ags 2026 -->
+                                <tr><td>6 Ags 2026</td><td>XII-B1</td><td>Agama</td><td>Enci Jein Ehu</td><td>Tidak ada keterangan</td></tr>
+                                <tr><td>6 Ags 2026</td><td>XII-B1</td><td>Kimia</td><td>Enci Jelly</td><td>Tidak ada keterangan</td></tr>
+                                <tr><td>6 Ags 2026</td><td>XII-B1</td><td>Matematika Umum</td><td>Mner Fritz Embongbulan</td><td>Tidak ada keterangan</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -789,7 +1036,7 @@
                 let bolos = $(this).find('td').eq(4).text().trim();
 
                 const parseNames = (str, category) => {
-                    if (!str || str === '-' || str.includes('(Hadir Semua)')) return;
+                    if (!str || str === '-' || str.includes('(Hadir Semua)') || str.includes('Hadir:')) return;
                     let list = str.split(',');
                     list.forEach(item => {
                         let cleanName = item.replace(/\(.*\)/g, '').trim();
@@ -801,7 +1048,7 @@
                             parts.forEach(p => parseNames(p.trim(), category));
                             return;
                         }
-                        if (cleanName) {
+                        if (cleanName && !cleanName.startsWith('Total')) {
                             let key = cleanName.toLowerCase() + '_' + kelas.toLowerCase();
                             if (!students[key]) {
                                 students[key] = { name: cleanName, kelas: kelas, S: 0, I: 0, A: 0, B: 0 };
@@ -867,7 +1114,7 @@
                 }
 
                 const countEntries = (str) => {
-                    if (!str || str === '-' || str.includes('(Hadir Semua)')) return 0;
+                    if (!str || str === '-' || str.includes('(Hadir Semua)') || str.includes('Hadir:')) return 0;
                     let arr = str.split(',').filter(item => item.trim() !== '');
                     return arr.length;
                 };
@@ -1017,12 +1264,12 @@
             new Chart(ctxBar, {
                 type: 'bar',
                 data: {
-                    labels: ['Senin, 3 Ags', 'Selasa, 4 Ags', 'Rabu, 5 Ags'],
+                    labels: ['Senin, 3 Ags', 'Selasa, 4 Ags', 'Rabu, 5 Ags', 'Kamis, 6 Ags'],
                     datasets: [
-                        { label: 'Sakit', data: [52, 45, 15], backgroundColor: '#ffc107' },
-                        { label: 'Izin', data: [42, 38, 15], backgroundColor: '#0dcaf0' },
-                        { label: 'Alpha', data: [28, 20, 16], backgroundColor: '#dc3545' },
-                        { label: 'Bolos/TK', data: [3, 9, 16], backgroundColor: '#6c757d' }
+                        { label: 'Sakit', data: [52, 45, 15, 12], backgroundColor: '#ffc107' },
+                        { label: 'Izin', data: [42, 38, 15, 10], backgroundColor: '#0dcaf0' },
+                        { label: 'Alpha', data: [28, 20, 16, 8], backgroundColor: '#dc3545' },
+                        { label: 'Bolos/TK', data: [3, 9, 16, 5], backgroundColor: '#6c757d' }
                     ]
                 },
                 options: { responsive: true }
@@ -1035,7 +1282,7 @@
                 data: {
                     labels: ['Sakit', 'Izin', 'Alpha', 'Bolos/TK'],
                     datasets: [{
-                        data: [112, 95, 64, 28],
+                        data: [124, 105, 72, 33],
                         backgroundColor: ['#ffc107', '#0dcaf0', '#dc3545', '#6c757d']
                     }]
                 },
@@ -1047,10 +1294,10 @@
             new Chart(ctxTeacherTrend, {
                 type: 'line',
                 data: {
-                    labels: ['Senin, 3 Ags', 'Selasa, 4 Ags', 'Rabu, 5 Ags'],
+                    labels: ['Senin, 3 Ags', 'Selasa, 4 Ags', 'Rabu, 5 Ags', 'Kamis, 6 Ags'],
                     datasets: [{
                         label: 'Jumlah Kejadian Guru Tidak Hadir',
-                        data: [11, 8, 12],
+                        data: [11, 8, 12, 3],
                         borderColor: '#dc3545',
                         backgroundColor: 'rgba(220, 53, 69, 0.15)',
                         fill: true,
@@ -1074,7 +1321,7 @@
                 data: {
                     labels: ['Ada Informasi & Memberi Tugas', 'Dinas Luar / FLS3N / Paskib', 'Tanpa Keterangan / Tanpa Tugas'],
                     datasets: [{
-                        data: [12, 8, 11],
+                        data: [12, 8, 14],
                         backgroundColor: ['#198754', '#0dcaf0', '#dc3545']
                     }]
                 },

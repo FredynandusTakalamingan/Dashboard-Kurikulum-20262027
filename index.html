@@ -91,7 +91,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 100;
+            z-index: 1000;
+            transition: margin-left 0.3s ease-in-out, left 0.3s ease-in-out;
         }
 
         #sidebar .sidebar-header {
@@ -127,6 +128,32 @@
             width: calc(100% - 260px);
             padding: 25px;
             min-height: 100vh;
+            transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+        }
+
+        /* Hide Sidebar Toggle Classes */
+        #sidebar.collapsed {
+            margin-left: -260px;
+        }
+
+        #content.expanded {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        /* Responsive Mobile Behavior */
+        @media (max-width: 768px) {
+            #sidebar {
+                left: -260px;
+            }
+            #sidebar.show-mobile {
+                left: 0;
+            }
+            #content {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
         }
 
         .card-stat {
@@ -208,10 +235,12 @@
         
         <!-- SIDEBAR MENU -->
         <nav id="sidebar">
-            <div class="sidebar-header">
-                <i class="fa-solid fa-school fa-2x text-warning mb-2"></i>
-                <h6 class="fw-bold mb-0">SMAN 2 BITUNG</h6>
-                <small class="text-muted">Kurikulum Control Center</small>
+            <div class="sidebar-header d-flex justify-content-between align-items-center">
+                <div class="text-center w-100">
+                    <i class="fa-solid fa-school fa-2x text-warning mb-2"></i>
+                    <h6 class="fw-bold mb-0">SMAN 2 BITUNG</h6>
+                    <small class="text-muted">Kurikulum Control Center</small>
+                </div>
             </div>
 
             <ul class="list-unstyled components">
@@ -247,9 +276,15 @@
             
             <!-- HEADER BAR -->
             <div id="sec-top" class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm section-target">
-                <div>
-                    <h4 class="fw-bold mb-0 text-primary">Dashboard Kurikulum</h4>
-                    <small class="text-muted">Selamat Datang, <strong>Fredynandus Takalamingan, S.Si</strong> (Wakasek Kurikulum)</small>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- TOMBOL HIDE/SHOW SIDEBAR -->
+                    <button class="btn btn-primary" id="sidebarToggle" title="Sembunyikan/Tampilkan Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <h4 class="fw-bold mb-0 text-primary">Dashboard Kurikulum</h4>
+                        <small class="text-muted">Selamat Datang, <strong>Fredynandus Takalamingan, S.Si</strong> (Wakasek Kurikulum)</small>
+                    </div>
                 </div>
                 <div class="text-end">
                     <h6 class="fw-bold mb-0" id="currentDate">-</h6>
@@ -580,13 +615,22 @@
                                     <tbody>
                                         <tr><td>X-E</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 30 Siswa</span></td></tr>
                                         <tr><td>X-G</td><td>Rajullah Makmur</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 35 Siswa</span></td></tr>
+                                        <tr><td>X-H</td><td>Glory Pondaag</td><td>Reyhan Bilondatu</td><td>Raysia Paputungan, Maksmiliano Anggoman</td><td><span class="badge bg-success">Hadir: 32 Siswa</span></td></tr>
+                                        <tr><td>X-I</td><td>Heru Cakra Lesmana, Rafael Tumimomor</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 34 Siswa</span></td></tr>
                                         <tr><td>X-K</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 33 Siswa</span></td></tr>
+                                        <tr><td>XI-A1</td><td>Davina Haryono, Joael Dandels, Rebecca Puasa, Vrendly Rantung</td><td>Amel Mitusala (Paskibraka), Christania Sahid (Paskibraka), Kanaya Rampala (Paskibraka)</td><td>-</td><td><span class="badge bg-success">Hadir: 31 Siswa</span> (Total Siswa: 38)</td></tr>
                                         <tr><td>XI-A2</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 28 Siswa</span></td></tr>
                                         <tr><td>XI-B2</td><td>Mawar Pateda</td><td>Julia Tarore (Paskib), Keren Lekatompessy (Paskib), Armilda Anggraeni (Paskib)</td><td>-</td><td><span class="badge bg-success">Hadir: 34 Siswa</span> (Total Tidak Hadir: 4)</td></tr>
                                         <tr><td>XI B3</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 31 Siswa</span></td></tr>
+                                        <tr><td>XI-C1</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 18 Siswa</span> (Tidak Hadir: 20 Siswa)</td></tr>
+                                        <tr><td>XI-F1</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 21 Siswa</span> (Tidak Hadir: 13 Siswa)</td></tr>
                                         <tr><td>XI-F2</td><td>Queen Taguli, Nalita Nilahi</td><td>Kartika Montu</td><td>Jibert Mangetik, Muhammad Hifni</td><td>-</td></tr>
+                                        <tr><td>XII-A1</td><td>Fillya Burungmanis, Friska Domis, Novanko Kalalo, Ricardo Wiku</td><td>Sergio Umboh</td><td>-</td><td><span class="badge bg-success">Hadir: 33 Siswa</span></td></tr>
                                         <tr><td>XII-A2</td><td>Juliana, Novena Rahajaan, Naila Rahman</td><td>Miranda Baruadi</td><td>-</td><td><span class="badge bg-success">Hadir: 35 Siswa</span> (Total Siswa: 39)</td></tr>
                                         <tr><td>XII-B1</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 27 Siswa</span></td></tr>
+                                        <tr><td>XII-E</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 15 Siswa</span></td></tr>
+                                        <tr><td>XII G1</td><td>Hasna Abdjul, Nayshella Lombontariang, Shalomitha Asmara</td><td>Gabriela Wengke</td><td>Ahmad Sakudu</td><td><span class="badge bg-success">Hadir: 30 Siswa</span></td></tr>
+                                        <tr><td>XII-H</td><td>-</td><td>-</td><td>-</td><td><span class="badge bg-success">Hadir: 26 Siswa</span> (Tidak Hadir: 10 Siswa)</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -997,6 +1041,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+        // TOGGLE HIDE / SHOW SIDEBAR
+        $('#sidebarToggle').on('click', function() {
+            if ($(window).width() <= 768) {
+                $('#sidebar').toggleClass('show-mobile');
+            } else {
+                $('#sidebar').toggleClass('collapsed');
+                $('#content').toggleClass('expanded');
+            }
+        });
+
         function enterDashboard() {
             document.getElementById('landingPage').style.opacity = '0';
             setTimeout(() => {
@@ -1011,6 +1065,11 @@
             const target = document.getElementById(id);
             if(target) {
                 target.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Auto-hide sidebar pada tampilan HP saat menu diklik
+            if ($(window).width() <= 768) {
+                $('#sidebar').removeClass('show-mobile');
             }
         }
 

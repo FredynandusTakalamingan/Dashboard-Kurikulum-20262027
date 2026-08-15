@@ -1555,7 +1555,7 @@
 <div class="card-header bg-white fw-bold"><i class="fa-solid fa-chalkboard-user text-primary me-2"></i>Grafik Guru Tidak Hadir</div>
 <div class="card-body">
 <div style="height:340px;"><canvas id="teacherAttendanceChart"></canvas></div>
-<small class="text-muted d-block mt-2">Jumlah guru tidak hadir pada Monitoring Log Guru Harian untuk Senin, 3 Agustus; Selasa, 4 Agustus; dan Rabu, 5 Agustus 2026.</small>
+<small class="text-muted d-block mt-2">Jumlah guru tidak hadir pada Monitoring Log Guru Harian untuk setiap tanggal.</small>
 </div>
 </div>
 </div>
@@ -1844,7 +1844,7 @@ $(document).ready(function() {
             new Chart(bar.getContext('2d'), {
                 type:'bar',
                 data:{
-                    labels:['Senin, 3 Agustus','Selasa, 4 Agustus','Rabu, 5 Agustus'],
+                    labels:['Senin, 3 Ags','Selasa, 4 Ags','Rabu, 5 Ags'],
                     datasets:[
                         {label:'Sakit',data:studentTrend.sakit,backgroundColor:'#ffc107'},
                         {label:'Izin',data:studentTrend.izin,backgroundColor:'#0dcaf0'},
@@ -1861,23 +1861,18 @@ $(document).ready(function() {
             });
         }
 
-        const teacherDatePatterns = [
-            /^(?:0?3)\s+Ags\s+2026$/i,
-            /^(?:0?4)\s+Ags\s+2026$/i,
-            /^(?:0?5)\s+Ags\s+2026$/i
-        ];
-
-        const teacherCounts = teacherDatePatterns.map(pattern => {
+        const teacherCounts = ['3 Ags 2026','4 Ags 2026','5 Ags 2026'].map(date => {
             const names = new Set();
-
-            document.querySelectorAll('#sec-kehadiran-guru tbody tr').forEach(tr => {
-                const cells = tr.querySelectorAll('td');
-                if (cells.length >= 5 && pattern.test(cells[0].innerText.trim())) {
-                    const name = cells[3].innerText.trim();
-                    if (name) names.add(name);
-                }
-            });
-
+            const teacherTable = $('#sec-kehadiran-guru table').DataTable();
+            if (teacherTable) {
+                teacherTable.rows().every(function() {
+                    const row = this.data();
+                    if (row && row.length >= 5 && String(row[0]).trim() === date) {
+                        const name = String(row[3]).replace(/<[^>]*>/g, '').trim();
+                        if (name) names.add(name);
+                    }
+                });
+            }
             return names.size;
         });
 
@@ -1886,7 +1881,7 @@ $(document).ready(function() {
             new Chart(teacher.getContext('2d'), {
                 type:'bar',
                 data:{
-                    labels:['Senin, 3 Agustus','Selasa, 4 Agustus','Rabu, 5 Agustus'],
+                    labels:['Senin, 3 Ags','Selasa, 4 Ags','Rabu, 5 Ags'],
                     datasets:[{
                         label:'Guru Tidak Hadir',
                         data:teacherCounts,

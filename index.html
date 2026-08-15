@@ -391,9 +391,6 @@
 </div>
 </div>
 </div>
-</div><div class="alert alert-secondary border-0 shadow-sm mb-4 small" id="source-summary-note">
-<i class="fa-solid fa-database me-2"></i>
-<strong>Catatan sumber:</strong> seluruh data dan angka yang sudah ada pada dua sintaks dipertahankan. Kartu ringkasan di atas mengikuti Sintax 1, sedangkan rekap siswa total, monitoring guru, rekap guru, dan grafik dari Sintax 2 ditempatkan pada menu masing-masing.
 </div>
 <!-- TAB TANGGAL MONITORING HARIAN (SENIN - RABU) -->
 <div class="card mb-4 border-0 shadow-sm section-target" id="sec-kehadiran-siswa">
@@ -1537,67 +1534,89 @@
 </table>
 </div>
 </div>
-</div><div class="row g-3 mb-4 section-target" id="sec-analisis">
-<div class="col-md-8">
-<div class="card border-0 shadow-sm p-3">
-<h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-column text-primary me-2"></i>Grafik Tren Kehadiran Siswa</h6>
-<canvas height="120" id="attendanceChart"></canvas>
-</div>
-</div>
-<div class="col-md-4">
-<div class="card border-0 shadow-sm p-3">
-<h6 class="fw-bold mb-3"><i class="fa-solid fa-chart-pie text-primary me-2"></i>Proporsi Ketidakhadiran</h6>
-<canvas height="250" id="pieChart"></canvas>
-</div>
-</div>
-<div class="col-12">
-<div class="card border-0 shadow-sm p-3 mt-1">
-<h6 class="fw-bold mb-3"><i class="fa-solid fa-chalkboard-user text-primary me-2"></i>Tren Ketidakhadiran Guru (3 - 5 Agustus 2026)</h6>
-<canvas height="90" id="teacherAttendanceChart"></canvas>
-<small class="text-muted d-block mt-2">Jumlah guru tidak hadir dihitung dari Monitoring Log Guru Harian pada masing-masing tanggal.</small>
-</div>
-</div></div><div class="card border-0 shadow-sm mb-5 section-target" id="sec-analisis-kelas-5">
-<div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
-<h5 class="fw-bold mb-0"><i class="fa-solid fa-ranking-star me-2"></i>Analisis Kelas (5 Besar)</h5>
-<span class="badge bg-light text-primary">Data KBM 3 - 5 Agustus 2026</span>
+</div><div class="card border-0 shadow-sm mb-5 section-target" id="sec-analisis">
+<div class="card-header bg-primary text-white py-3">
+<h5 class="fw-bold mb-0"><i class="fa-solid fa-chart-line me-2"></i>Analisis Tren &amp; Grafik</h5>
+<span class="badge bg-light text-primary">Periode 3 - 5 Agustus 2026</span>
 </div>
 <div class="card-body">
-<div class="alert alert-light border small mb-3">
-<i class="fa-solid fa-circle-info me-2 text-primary"></i>
-      Analisis dihitung dari jumlah <strong>kejadian ketidakhadiran yang tercatat</strong> pada tabel Kehadiran Siswa (KBM) tanggal 3–5 Agustus 2026. Kelas dengan total tertinggi ditampilkan sebagai <strong>5 Besar Perlu Penanganan</strong>, sedangkan total terendah sebagai <strong>5 Besar Kondisi Baik</strong>. Data sumber tidak diubah.
-    </div>
+<div class="row g-4">
+<div class="col-lg-7">
+<div class="card border-0 shadow-sm h-100">
+<div class="card-header bg-white fw-bold"><i class="fa-solid fa-chart-column text-primary me-2"></i>Grafik Kehadiran Siswa</div>
+<div class="card-body">
+<div style="height:340px;"><canvas id="attendanceChart"></canvas></div>
+<small class="text-muted d-block mt-2">Jumlah siswa tidak hadir berdasarkan Sakit, Izin, Alpa, dan Bolos/TK pada 3 - 5 Agustus 2026.</small>
+</div>
+</div>
+</div>
+<div class="col-lg-5">
+<div class="card border-0 shadow-sm h-100">
+<div class="card-header bg-white fw-bold"><i class="fa-solid fa-chalkboard-user text-primary me-2"></i>Grafik Guru Tidak Hadir</div>
+<div class="card-body">
+<div style="height:340px;"><canvas id="teacherAttendanceChart"></canvas></div>
+<small class="text-muted d-block mt-2">Jumlah guru tidak hadir pada Monitoring Log Guru Harian untuk setiap tanggal.</small>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="card border-0 shadow-sm mb-5 section-target" id="sec-analisis-kelas-5">
+<div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+<h5 class="fw-bold mb-0"><i class="fa-solid fa-ranking-star me-2"></i>Analisis Kelas (5 Besar)</h5>
+<span class="badge bg-light text-primary">Kehadiran Siswa 3 - 5 Agustus 2026</span>
+</div>
+<div class="card-body">
+<div class="alert alert-info border-0 small mb-4">
+<i class="fa-solid fa-circle-info me-2"></i>
+<strong>Dasar analisis:</strong> peringkat dihitung dari <strong>jumlah ketidakhadiran siswa yang tercatat</strong> (sakit, izin, alpa, dan bolos/TK) pada data KBM tanggal 3–5 Agustus 2026. <strong>5 kelas dengan total ketidakhadiran paling sedikit</strong> ditampilkan sebagai kelas terbaik, sedangkan <strong>5 kelas dengan total ketidakhadiran paling banyak</strong> ditampilkan sebagai kelas yang membutuhkan penanganan.
+</div>
 <div class="row g-4">
 <div class="col-lg-6">
-<div class="card border-danger h-100">
-<div class="card-header bg-danger text-white fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i>5 Besar Perlu Penanganan</div>
+<div class="card border-success h-100 shadow-sm">
+<div class="card-header bg-success text-white fw-bold">
+<i class="fa-solid fa-circle-check me-2"></i>5 Kelas Terbaik Kehadiran
+</div>
+<div class="card-body p-0">
 <div class="table-responsive">
-<table class="table table-hover table-bordered align-middle mb-0" id="analysisNeedTable">
-<thead class="table-danger"><tr><th>Peringkat</th><th>Kelas</th><th>Sakit</th><th>Izin</th><th>Alpa</th><th>Bolos/TK</th><th>Total</th><th>Catatan</th></tr></thead>
+<table class="table table-hover table-bordered align-middle mb-0" id="analysisGoodTable">
+<thead class="table-success"><tr><th>Peringkat</th><th>Kelas</th><th>Sakit</th><th>Izin</th><th>Alpa</th><th>Bolos/TK</th><th>Total Ketidakhadiran</th><th>Keterangan</th></tr></thead>
 <tbody></tbody>
 </table>
+</div>
+</div>
+<div class="card-footer bg-light small text-success fw-semibold">
+<i class="fa-solid fa-thumbs-up me-1"></i>Prioritas: dipertahankan dan dijadikan contoh praktik kehadiran yang baik.
 </div>
 </div>
 </div>
 <div class="col-lg-6">
-<div class="card border-success h-100">
-<div class="card-header bg-success text-white fw-bold"><i class="fa-solid fa-circle-check me-2"></i>5 Besar Kondisi Baik</div>
+<div class="card border-danger h-100 shadow-sm">
+<div class="card-header bg-danger text-white fw-bold">
+<i class="fa-solid fa-triangle-exclamation me-2"></i>5 Kelas Terburuk Kehadiran
+</div>
+<div class="card-body p-0">
 <div class="table-responsive">
-<table class="table table-hover table-bordered align-middle mb-0" id="analysisGoodTable">
-<thead class="table-success"><tr><th>Peringkat</th><th>Kelas</th><th>Sakit</th><th>Izin</th><th>Alpa</th><th>Bolos/TK</th><th>Total</th><th>Catatan</th></tr></thead>
+<table class="table table-hover table-bordered align-middle mb-0" id="analysisNeedTable">
+<thead class="table-danger"><tr><th>Peringkat</th><th>Kelas</th><th>Sakit</th><th>Izin</th><th>Alpa</th><th>Bolos/TK</th><th>Total Ketidakhadiran</th><th>Prioritas Penanganan</th></tr></thead>
 <tbody></tbody>
 </table>
 </div>
 </div>
+<div class="card-footer bg-light small text-danger fw-semibold">
+<i class="fa-solid fa-bullseye me-1"></i>Prioritas: dilakukan penelusuran penyebab ketidakhadiran dan tindak lanjut bersama wali kelas.
 </div>
 </div>
 </div>
-</div><footer class="text-center">
+</div>
+</div>
+</div></div>
+</div>
+<footer class="text-center">
 <div class="container">
 <p class="mb-0">© 2026 SMAN 2 Bitung - Dashboard Monitoring Kurikulum &amp; Kehadiran Siswa.</p>
 </div>
 </footer>
-</div>
-</div>
 <!-- SCRIPTS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -1663,48 +1682,121 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', () => toggleMobileS
 const closeSidebarBtn = document.getElementById('closeSidebarBtn');
 if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', () => toggleMobileSidebar(false));
 
+function normalizeClassName(text) {
+    let k = (text || '').replace(/\s+/g, ' ').trim();
+    // Samakan variasi penulisan kelas hanya untuk kebutuhan analisis,
+    // tanpa mengubah data sumber pada tabel KBM.
+    k = k.replace(/\./g, '-');
+    k = k.replace(/\s*[-]\s*/g, '-');
+    k = k.replace(/\s+/g, '-');
+    return k.toUpperCase();
+}
+
 function countNames(text) {
     if (!text) return 0;
     let t = text.replace(/\s+/g, ' ').trim();
-    if (!t || t === '-') return 0;
-    t = t.replace(/^(Bolos|Terlambat|TK)\s*:\s*/i, '');
-    const parts = t.split(',').map(x => x.trim()).filter(Boolean);
-    return parts.filter(x => x !== '-').length;
+    if (!t || /^-/.test(t) && /Hadir Semua/i.test(t)) return 0;
+    if (t === '-') return 0;
+
+    // Pisahkan nama berdasarkan koma atau | hanya jika berada di luar tanda kurung,
+    // sehingga keterangan seperti "Jam 1, 4, 9, 10" tidak dihitung sebagai nama baru.
+    const parts = [];
+    let current = '';
+    let depth = 0;
+    for (const ch of t) {
+        if (ch === '(') depth++;
+        if (ch === ')') depth = Math.max(0, depth - 1);
+        if ((ch === ',' || ch === '|') && depth === 0) {
+            if (current.trim()) parts.push(current.trim());
+            current = '';
+        } else {
+            current += ch;
+        }
+    }
+    if (current.trim()) parts.push(current.trim());
+
+    return parts.filter(part => {
+        let p = part.trim();
+        p = p.replace(/^(Bolos|Terlambat|TK)\s*:\s*/i, '').trim();
+        return p && p !== '-' && !/^\(Hadir Semua\)$/i.test(p) && !/^-\s*\(Hadir Semua\)$/i.test(p);
+    }).length;
 }
 
 function buildClassAnalysis() {
     const totals = {};
+
     ['data-senin','data-selasa','data-rabu'].forEach(id => {
         const table = document.querySelector('#' + id + ' table');
         if (!table) return;
+
         table.querySelectorAll('tbody tr').forEach(tr => {
             const cells = tr.querySelectorAll('td');
             if (cells.length < 5) return;
-            const kelas = cells[0].innerText.trim();
-            if (!kelas) return;
-            if (!totals[kelas]) totals[kelas] = { kelas, sakit:0, izin:0, alpa:0, bolos:0 };
-            totals[kelas].sakit += countNames(cells[1].innerText);
-            totals[kelas].izin += countNames(cells[2].innerText);
-            totals[kelas].alpa += countNames(cells[3].innerText);
-            totals[kelas].bolos += countNames(cells[4].innerText);
+
+            const rawClass = cells[0].innerText.trim();
+            if (!rawClass) return;
+
+            const key = normalizeClassName(rawClass);
+            if (!totals[key]) {
+                totals[key] = {
+                    kelas: key,
+                    sakit: 0,
+                    izin: 0,
+                    alpa: 0,
+                    bolos: 0
+                };
+            }
+
+            totals[key].sakit += countNames(cells[1].innerText);
+            totals[key].izin += countNames(cells[2].innerText);
+            totals[key].alpa += countNames(cells[3].innerText);
+            totals[key].bolos += countNames(cells[4].innerText);
         });
     });
-    const arr = Object.values(totals).map(x => ({...x, total:x.sakit+x.izin+x.alpa+x.bolos}));
-    arr.sort((a,b) => b.total-a.total || a.kelas.localeCompare(b.kelas,'id'));
-    const need = arr.slice(0,5);
-    const good = [...arr].sort((a,b) => a.total-b.total || a.kelas.localeCompare(b.kelas,'id')).slice(0,5);
-    const fill = (id, data, badge) => {
-        const tbody = document.querySelector('#'+id+' tbody');
+
+    const allClasses = Object.values(totals).map(x => ({
+        ...x,
+        total: x.sakit + x.izin + x.alpa + x.bolos
+    }));
+
+    // Terbaik = ketidakhadiran paling sedikit.
+    const best = [...allClasses]
+        .sort((a, b) => a.total - b.total || a.kelas.localeCompare(b.kelas, 'id'))
+        .slice(0, 5);
+
+    // Terburuk = ketidakhadiran paling banyak.
+    const worst = [...allClasses]
+        .sort((a, b) => b.total - a.total || a.kelas.localeCompare(b.kelas, 'id'))
+        .slice(0, 5);
+
+    function fillTable(id, data, type) {
+        const tbody = document.querySelector('#' + id + ' tbody');
         if (!tbody) return;
         tbody.innerHTML = '';
-        data.forEach((x,i) => {
-            const tr=document.createElement('tr');
-            tr.innerHTML=`<td>${i+1}</td><td class="fw-bold">${x.kelas}</td><td>${x.sakit}</td><td>${x.izin}</td><td>${x.alpa}</td><td>${x.bolos}</td><td><span class="badge ${badge}">${x.total}</span></td><td>${badge.includes('danger')?'Perlu ditindaklanjuti':'Relatif baik'}</td>`;
+
+        data.forEach((x, i) => {
+            const tr = document.createElement('tr');
+            const totalBadge = type === 'best' ? 'bg-success' : 'bg-danger';
+            const note = type === 'best'
+                ? 'Kehadiran terbaik'
+                : 'Perlu penanganan';
+
+            tr.innerHTML = `
+                <td class="text-center fw-bold">${i + 1}</td>
+                <td class="fw-bold">${x.kelas}</td>
+                <td class="text-center">${x.sakit}</td>
+                <td class="text-center">${x.izin}</td>
+                <td class="text-center">${x.alpa}</td>
+                <td class="text-center">${x.bolos}</td>
+                <td class="text-center"><span class="badge ${totalBadge} fs-6">${x.total}</span></td>
+                <td>${note}</td>
+            `;
             tbody.appendChild(tr);
         });
-    };
-    fill('analysisNeedTable',need,'bg-danger');
-    fill('analysisGoodTable',good,'bg-success');
+    }
+
+    fillTable('analysisGoodTable', best, 'best');
+    fillTable('analysisNeedTable', worst, 'worst');
 }
 
 $(document).ready(function() {
@@ -1723,8 +1815,30 @@ $(document).ready(function() {
     });
 
     buildClassAnalysis();
-
     if (typeof Chart !== 'undefined') {
+        const studentTrend = {sakit: [], izin: [], alpa: [], bolos: []};
+
+        ['data-senin','data-selasa','data-rabu'].forEach(id => {
+            const table = document.querySelector('#' + id + ' table');
+            const counts = {sakit:0, izin:0, alpa:0, bolos:0};
+
+            if (table) {
+                table.querySelectorAll('tbody tr').forEach(tr => {
+                    const cells = tr.querySelectorAll('td');
+                    if (cells.length < 5) return;
+                    counts.sakit += countNames(cells[1].innerText);
+                    counts.izin += countNames(cells[2].innerText);
+                    counts.alpa += countNames(cells[3].innerText);
+                    counts.bolos += countNames(cells[4].innerText);
+                });
+            }
+
+            studentTrend.sakit.push(counts.sakit);
+            studentTrend.izin.push(counts.izin);
+            studentTrend.alpa.push(counts.alpa);
+            studentTrend.bolos.push(counts.bolos);
+        });
+
         const bar = document.getElementById('attendanceChart');
         if (bar) {
             new Chart(bar.getContext('2d'), {
@@ -1732,36 +1846,56 @@ $(document).ready(function() {
                 data:{
                     labels:['Senin, 3 Ags','Selasa, 4 Ags','Rabu, 5 Ags'],
                     datasets:[
-                        {label:'Sakit',data:[52,45,15],backgroundColor:'#ffc107'},
-                        {label:'Izin',data:[42,38,15],backgroundColor:'#0dcaf0'},
-                        {label:'Alpha',data:[28,20,16],backgroundColor:'#dc3545'},
-                        {label:'Bolos/TK',data:[3,9,16],backgroundColor:'#6c757d'}
+                        {label:'Sakit',data:studentTrend.sakit,backgroundColor:'#ffc107'},
+                        {label:'Izin',data:studentTrend.izin,backgroundColor:'#0dcaf0'},
+                        {label:'Alpa',data:studentTrend.alpa,backgroundColor:'#dc3545'},
+                        {label:'Bolos/TK',data:studentTrend.bolos,backgroundColor:'#6c757d'}
                     ]
-                }, options:{responsive:true, maintainAspectRatio:false}
+                },
+                options:{
+                    responsive:true,
+                    maintainAspectRatio:false,
+                    scales:{y:{beginAtZero:true,ticks:{stepSize:1}}},
+                    plugins:{legend:{position:'bottom'}}
+                }
             });
         }
-        const pie = document.getElementById('pieChart');
-        if (pie) {
-            new Chart(pie.getContext('2d'), {
-                type:'doughnut',
-                data:{labels:['Sakit','Izin','Alpha','Bolos/TK'],datasets:[{data:[112,95,64,28],backgroundColor:['#ffc107','#0dcaf0','#dc3545','#6c757d']}]},
-                options:{responsive:true,maintainAspectRatio:false}
+
+        const teacherCounts = ['3 Ags 2026','4 Ags 2026','5 Ags 2026'].map(date => {
+            const names = new Set();
+            document.querySelectorAll('#sec-kehadiran-guru tbody tr').forEach(tr => {
+                const cells = tr.querySelectorAll('td');
+                if (cells.length >= 5 && cells[0].innerText.trim() === date) {
+                    const name = cells[3].innerText.trim();
+                    if (name) names.add(name);
+                }
             });
-        }
+            return names.size;
+        });
+
         const teacher = document.getElementById('teacherAttendanceChart');
         if (teacher) {
             new Chart(teacher.getContext('2d'), {
-                type:'line',
-                data:{labels:['Senin, 3 Ags','Selasa, 4 Ags','Rabu, 5 Ags'],datasets:[{label:'Guru Tidak Hadir',data:[11,8,12],borderWidth:3,tension:.25,fill:false}]},
-                options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}
+                type:'bar',
+                data:{
+                    labels:['Senin, 3 Ags','Selasa, 4 Ags','Rabu, 5 Ags'],
+                    datasets:[{
+                        label:'Guru Tidak Hadir',
+                        data:teacherCounts,
+                        backgroundColor:'#0d6efd'
+                    }]
+                },
+                options:{
+                    responsive:true,
+                    maintainAspectRatio:false,
+                    scales:{y:{beginAtZero:true,ticks:{stepSize:1}}},
+                    plugins:{legend:{display:false}}
+                }
             });
         }
     }
 });
+
 </script>
 </body>
 </html>
-
-
-sintax 2
-
